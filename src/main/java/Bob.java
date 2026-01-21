@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Bob {
@@ -11,6 +13,7 @@ public class Bob {
 
         Scanner in = new Scanner(System.in);
         String input;
+        List<String> tasks = new ArrayList<>();
 
         while (true) {
             input = in.nextLine();
@@ -22,9 +25,19 @@ public class Bob {
                 break;
             }
 
-            System.out.println(line);
-            System.out.println(" " + input);
-            System.out.println(line);
+            else if (input.equals("list")) {
+                for (int i = 0; i < tasks.size(); i++) {
+                    System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+                }
+                System.out.println(line);
+            }
+
+            else{
+                System.out.println(line);
+                tasks.add(input);
+                System.out.println(" added: " + input);
+                System.out.println(line);
+            }
         }
     }
 }
