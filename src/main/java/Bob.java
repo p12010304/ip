@@ -13,10 +13,11 @@ public class Bob {
 
         Scanner in = new Scanner(System.in);
         String input;
-        List<String> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
 
         while (true) {
             input = in.nextLine();
+            String[] words = input.split(" ");
 
             if (input.equals("bye")) {
                 System.out.println(line);
@@ -26,15 +27,34 @@ public class Bob {
             }
 
             else if (input.equals("list")) {
+                System.out.println(line);
+                System.out.println(" Here are the tasks in your list:");
                 for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+                    System.out.println(" " + (i + 1) + "." + tasks.get(i));
                 }
                 System.out.println(line);
             }
+            else if(words[0].equals("mark")){
+                int taskIndex = Integer.parseInt(words[1]) - 1;
+                tasks.get(taskIndex).markAsDone();
 
+                System.out.println(line);
+                System.out.println(" Nice! I've marked this task as done:");
+                System.out.println("   " + tasks.get(taskIndex));
+                System.out.println(line);
+            }
+            else if (words[0].equals("unmark")) {
+                int taskIndex = Integer.parseInt(words[1]) - 1;
+                tasks.get(taskIndex).unmarkAsDone();
+
+                System.out.println(line);
+                System.out.println(" OK, I've marked this task as not done yet:");
+                System.out.println("   " + tasks.get(taskIndex));
+                System.out.println(line);
+            }
             else{
                 System.out.println(line);
-                tasks.add(input);
+                tasks.add(new Task(input));
                 System.out.println(" added: " + input);
                 System.out.println(line);
             }
