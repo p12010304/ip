@@ -33,6 +33,8 @@ public class Bob {
                     handleMarkUnmark(input, tasks, true);
                 } else if (input.startsWith("unmark")) {
                     handleMarkUnmark(input, tasks, false);
+                } else if (input.startsWith("delete")) {
+                    handleDelete(input, tasks);
                 } else if (input.startsWith("todo")) {
                     if (input.trim().length() <= 4) {
                         throw new BobException("The description of a todo cannot be empty.");
@@ -108,6 +110,21 @@ public class Bob {
             System.out.println(" OK, I've marked this task as not done yet:");
         }
         System.out.println("   " + tasks.get(idx));
+        System.out.println(line);
+    }
+
+    private static void handleDelete(String input, List<Task> tasks) throws BobException {
+        String line = "____________________________________________________________";
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            throw new BobException("Please specify which task number to delete.");
+        }
+        int idx = Integer.parseInt(parts[1]) - 1;
+        Task removedTask = tasks.remove(idx);
+        System.out.println(line);
+        System.out.println(" Noted. I've removed this task:");
+        System.out.println("   " + removedTask);
+        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
         System.out.println(line);
     }
 }
