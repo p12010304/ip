@@ -1,8 +1,13 @@
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Bob {
+    private static final String FILE_PATH = Paths.get("data", "bob.txt").toString();
+    private static Storage storage = new Storage(FILE_PATH);
+
     public static void main(String[] args) {
         String line = "____________________________________________________________";
         System.out.println(line);
@@ -13,8 +18,23 @@ public class Bob {
         Scanner in = new Scanner(System.in);
         List<Task> tasks = new ArrayList<>();
 
+        // Load tasks from file
+        try {
+            tasks = storage.load();
+            if (tasks.isEmpty()) {
+                System.out.println(" No existing tasks found. Starting with a fresh task list.");
+            } else {
+                System.out.println(" Loaded " + tasks.size() + " task(s) from storage.");
+            }
+        } catch (IOException e) {
+            System.out.println(" Error loading tasks: " + e.getMessage());
+            System.out.println(" Starting with empty list.");
+            tasks = new ArrayList<>();
+        }
+
         while (true) {
             String input = in.nextLine();
+            if (input.trim().isEmpty()) continue;
             String firstWord = input.split(" ")[0].toUpperCase();
 
             Command cmd;
@@ -87,10 +107,8 @@ public class Bob {
 
                     case UNKNOWN:
                     default:
-                        //when user inputs indistinguishable prompts
                         throw new BobException("I'm sorry, but I don't know what that means :-(");
                 }
-                //catch the exceptions and print corresponding message
             } catch (BobException e) {
                 System.out.println(line);
                 System.out.println(" Hey Bob!! " + e.getMessage());
@@ -111,6 +129,11 @@ public class Bob {
     private static void addTask(Task t, List<Task> tasks) {
         String line = "____________________________________________________________";
         tasks.add(t);
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            System.out.println("Error saving task.");
+        }
         System.out.println(line);
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + t);
@@ -135,6 +158,11 @@ public class Bob {
             System.out.println(line);
             System.out.println(" OK, I've marked this task as not done yet:");
         }
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            System.out.println("Error saving task status.");
+        }
         System.out.println("   " + tasks.get(idx));
         System.out.println(line);
     }
@@ -148,6 +176,11 @@ public class Bob {
         }
         int idx = Integer.parseInt(parts[1]) - 1;
         Task removedTask = tasks.remove(idx);
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            System.out.println("Error updating storage after delete.");
+        }
         System.out.println(line);
         System.out.println(" Noted. I've removed this task:");
         System.out.println("   " + removedTask);
