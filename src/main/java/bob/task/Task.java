@@ -33,6 +33,15 @@ public class Task {
             description);
     }
 
+    /**
+     * Returns the description of this task.
+     *
+     * @return the task description
+     */
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

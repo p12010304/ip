@@ -1,12 +1,13 @@
 package bob.tasklist;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import bob.exception.BobException;
 import bob.task.Task;
 import bob.task.Deadline;
 import bob.task.Event;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TaskList {
     private List<Task> tasks;
@@ -72,6 +73,23 @@ public class TaskList {
                 if (!e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate)) {
                     matchingTasks.add(t);
                 }
+            }
+        }
+        return matchingTasks;
+    }
+
+    /**
+     * Finds all tasks that contain the given keyword in their description.
+     *
+     * @param keyword the keyword to search for
+     * @return a list of tasks matching the keyword
+     */
+    public List<Task> findTasksByKeyword(String keyword) {
+        List<Task> matchingTasks = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
+        for (Task t : tasks) {
+            if (t.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matchingTasks.add(t);
             }
         }
         return matchingTasks;

@@ -116,4 +116,23 @@ public class Ui {
         }
         showLine();
     }
+
+    /**
+     * Displays tasks that match a keyword search.
+     *
+     * @param matchingTasks the list of tasks matching the keyword
+     * @param keyword the search keyword
+     */
+    public void showTasksFound(List<Task> matchingTasks, String keyword) {
+        showLine();
+        if (matchingTasks.isEmpty()) {
+            println(" No matching tasks found for \"" + keyword + "\"");
+        } else {
+            println(" Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                println(" " + (i + 1) + "." + matchingTasks.get(i));
+            }
+        }
+        showLine();
+    }
 }
