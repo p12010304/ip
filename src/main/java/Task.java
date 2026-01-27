@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+
 class Task {
     protected String description;
     protected boolean isDone;
@@ -44,41 +49,86 @@ class Todo extends Task {
 }
 
 class Deadline extends Task {
-    protected String by;
+    protected LocalDate by;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
+                                                                              .withLocale(Locale.ENGLISH);
 
     public Deadline(String description, String by) {
+        super(description);
+        this.by = parseDate(by);
+    }
+
+    public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;
     }
 
+    private static LocalDate parseDate(String dateStr) throws IllegalArgumentException {
+        try {
+            return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+        }
+    }
+
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(OUTPUT_FORMAT) + ")";
     }
 
     @Override
     public String toFileString() {
-        return super.toFileString() + " | " + by;
+        return super.toFileString() + " | " + by.format(INPUT_FORMAT);
+    }
+
+    public LocalDate getDate() {
+        return by;
     }
 }
 
 class Event extends Task {
-    protected String from;
-    protected String to;
+    protected LocalDate from;
+    protected LocalDate to;
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
+                                                                              .withLocale(Locale.ENGLISH);
 
     public Event(String description, String from, String to) {
+        super(description);
+        this.from = parseDate(from);
+        this.to = parseDate(to);
+    }
+
+    public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
+    private static LocalDate parseDate(String dateStr) throws IllegalArgumentException {
+        try {
+            return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+        }
+    }
+
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(OUTPUT_FORMAT) + " to: " + to.format(OUTPUT_FORMAT) + ")";
     }
 
     @Override
     public String toFileString() {
-        return super.toFileString() + " | " + from + " | " + to;
+        return super.toFileString() + " | " + from.format(INPUT_FORMAT) + " | " + to.format(INPUT_FORMAT);
+    }
+
+    public LocalDate getFromDate() {
+        return from;
+    }
+
+    public LocalDate getToDate() {
+        return to;
     }
 }
