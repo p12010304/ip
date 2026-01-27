@@ -19,9 +19,6 @@ public class TaskList {
     /**
      * Constructs an empty TaskList.
      */
-    /**
-     * Constructs an empty TaskList.
-     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
@@ -113,11 +110,6 @@ public class TaskList {
         return tasks.size();
     }
 
-    /**
-     * Checks if the task list is empty.
-     *
-     * @return true if the list contains no tasks, false otherwise
-     */
     /**
      * Checks if the task list is empty.
      *

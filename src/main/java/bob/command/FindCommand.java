@@ -10,19 +10,15 @@ import bob.ui.Ui;
 import bob.storage.Storage;
 
 /**
- * Command to find tasks on a specific date.
- * Searches for Deadline tasks with exact date match and Event tasks that contain the date.
- */
-/**
- * Command to find tasks on a specific date.
- * Searches for Deadline tasks with exact date match and Event tasks that contain the date.
+ * Command to find tasks by keyword search.
+ * Searches for tasks that contain the keyword in their description.
  */
 public class FindCommand extends BaseCommand {
     private String input;
 
     /**
      * Constructs a FindCommand with the user input.
-     * @param input the user input string containing the date to search for (format: yyyy-MM-dd)
+     * @param input the user input string containing the keyword to search for (e.g., "find book")
      */
     public FindCommand(String input) {
         this.input = input;

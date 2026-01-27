@@ -12,6 +12,11 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bob.task.Task;
+import bob.task.Todo;
+import bob.task.Deadline;
+import bob.task.Event;
+
 /**
  * Handles persistence of tasks to and from a file.
  * Manages saving tasks to disk and loading them back into memory.

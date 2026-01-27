@@ -38,16 +38,10 @@ public class Task {
     /**
      * Marks this task as done.
      */
-    /**
-     * Marks this task as done.
-     */
     public void markAsDone() {
         this.isDone = true;
     }
 
-    /**
-     * Marks this task as not done.
-     */
     /**
      * Marks this task as not done.
      */
