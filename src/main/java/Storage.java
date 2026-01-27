@@ -1,0 +1,116 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Storage {
+    private String filePath;
+
+    public Storage(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void save(List<Task> tasks) throws IOException {
+        Path path = Paths.get(filePath);
+        File f = path.toFile();
+        
+        // Create parent directories if they don't exist
+        if (f.getParentFile() != null && !f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
+        
+        // Write tasks to file
+        FileWriter fw = new FileWriter(f);
+        try {
+            for (Task t : tasks) {
+                fw.write(t.toFileString() + System.lineSeparator());
+            }
+        } finally {
+            fw.close();
+        }
+    }
+
+    public List<Task> load() throws IOException {
+        List<Task> loadedTasks = new ArrayList<>();
+        
+        Path path = Paths.get(filePath);
+        File f = path.toFile();
+        
+        // If file doesn't exist, return empty list
+        if (!f.exists()) {
+            return loadedTasks;
+        }
+
+        try {
+            List<String> lines = Files.readAllLines(path);
+            for (String line : lines) {
+                try {
+                    // Skip empty lines
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
+                    
+                    String[] p = line.split(" \\| ");
+                    
+                    // Validate minimum fields
+                    if (p.length < 3) {
+                        System.out.println("Warning: Skipping corrupted line (insufficient fields): " + line);
+                        continue;
+                    }
+                    
+                    Task t;
+                    try {
+                        switch (p[0].trim()) {
+                            case "T":
+                                t = new Todo(p[2]);
+                                break;
+                            case "D":
+                                if (p.length < 4) {
+                                    System.out.println("Warning: Skipping corrupted deadline (missing deadline): " + line);
+                                    continue;
+                                }
+                                t = new Deadline(p[2], p[3]);
+                                break;
+                            case "E":
+                                if (p.length < 5) {
+                                    System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
+                                    continue;
+                                }
+                                t = new Event(p[2], p[3], p[4]);
+                                break;
+                            default:
+                                System.out.println("Warning: Skipping line with unknown task type: " + line);
+                                continue;
+                        }
+                        
+                        // Mark as done if status is 1
+                        try {
+                            if (p[1].trim().equals("1")) {
+                                t.markAsDone();
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Warning: Invalid status field, treating as not done: " + line);
+                        }
+                        
+                        loadedTasks.add(t);
+                    } catch (Exception e) {
+                        System.out.println("Warning: Error parsing task, skipping line: " + line);
+                        continue;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Warning: Error processing line: " + line);
+                    continue;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Warning: Error reading file, starting with empty list: " + e.getMessage());
+            return loadedTasks;
+        }
+        
+        return loadedTasks;
+    }
+}

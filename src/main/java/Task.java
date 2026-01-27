@@ -19,6 +19,13 @@ class Task {
         this.isDone = false;
     }
 
+    public String toFileString() {
+        return String.format("%s | %d | %s", 
+            (this instanceof Todo ? "T" : this instanceof Deadline ? "D" : "E"),
+            (isDone ? 1 : 0), 
+            description);
+    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
@@ -48,6 +55,11 @@ class Deadline extends Task {
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by + ")";
     }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + " | " + by;
+    }
 }
 
 class Event extends Task {
@@ -63,5 +75,10 @@ class Event extends Task {
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+    }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + " | " + from + " | " + to;
     }
 }
