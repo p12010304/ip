@@ -21,8 +21,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user input and creates appropriate command and task objects.
+ * Handles command parsing, task creation, and date parsing with validation.
+ */
 public class Parser {
     
+    /**
+     * Parses a user input string and returns the corresponding command.
+     *
+     * @param input the raw user input string
+     * @return the parsed BaseCommand
+     * @throws BobException if the input is empty or invalid
+     */
     public static BaseCommand parseCommand(String input) throws BobException {
         if (input.trim().isEmpty()) {
             throw new BobException("Command cannot be empty.");
@@ -61,6 +72,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a todo command and creates a Todo task.
+     *
+     * @param input the todo command string
+     * @return a new Todo task
+     * @throws BobException if the description is empty
+     */
     public static Task parseAddTodo(String input) throws BobException {
         if (input.trim().length() <= 4) {
             throw new BobException("The description of a todo cannot be empty.");
@@ -69,6 +87,13 @@ public class Parser {
         return new Todo(description);
     }
 
+    /**
+     * Parses a deadline command and creates a Deadline task.
+     *
+     * @param input the deadline command string (format: deadline &lt;desc&gt; /by &lt;date&gt;)
+     * @return a new Deadline task
+     * @throws BobException if the /by part is missing or description/date is empty
+     */
     public static Task parseAddDeadline(String input) throws BobException {
         if (!input.contains(" /by ")) {
             throw new BobException("A deadline must have a /by part.");
@@ -84,6 +109,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses an event command and creates an Event task.
+     *
+     * @param input the event command string (format: event &lt;desc&gt; /from &lt;date&gt; /to &lt;date&gt;)
+     * @return a new Event task
+     * @throws BobException if /from or /to parts are missing or description/dates are empty
+     */
     public static Task parseAddEvent(String input) throws BobException {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
             throw new BobException("An event must have /from and /to parts.");
@@ -99,6 +131,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a task index from a command string.
+     * Converts from 1-based (user input) to 0-based (internal) indexing.
+     *
+     * @param input the command string containing the task index
+     * @return the 0-based task index
+     * @throws BobException if the index is missing or not a valid number
+     */
     public static int parseTaskIndex(String input) throws BobException {
         String[] parts = input.split(" ");
         if (parts.length < 2) {
@@ -111,6 +151,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a date string in yyyy-MM-dd format to a LocalDate.
+     *
+     * @param dateStr the date string to parse
+     * @return the parsed LocalDate
+     * @throws BobException if the date format is invalid
+     */
     public static LocalDate parseDate(String dateStr) throws BobException {
         DateTimeFormatter dateFormat = 
             DateTimeFormatter.ofPattern("yyyy-MM-dd");

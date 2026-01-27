@@ -9,6 +9,11 @@ import bob.ui.Ui;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * Main entry point for the Bob task management chatbot application.
+ * Manages the overall lifecycle of the application including initialization,
+ * user interaction loop, and task persistence.
+ */
 public class Bob {
     private static final String FILE_PATH = Paths.get("data", "bob.txt").toString();
     
@@ -16,6 +21,12 @@ public class Bob {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes Bob with a specified file path for task storage.
+     * Loads existing tasks from storage or creates a new task list if storage fails.
+     *
+     * @param filePath the path where task data will be persisted
+     */
     public Bob(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -28,6 +39,11 @@ public class Bob {
         }
     }
 
+    /**
+     * Runs the main application loop.
+     * Continuously reads user commands, parses them, executes them, and handles errors
+     * until the user exits the application.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -53,6 +69,11 @@ public class Bob {
         }
     }
 
+    /**
+     * Entry point for the application.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         new Bob(FILE_PATH).run();
     }

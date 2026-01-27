@@ -8,9 +8,17 @@ import bob.ui.Ui;
 import bob.storage.Storage;
 import java.io.IOException;
 
+/**
+ * Command to add a new Todo task to the task list.
+ * Parses the input to create a Todo task and saves it to storage.
+ */
 public class AddTodoCommand extends BaseCommand {
     private String input;
 
+    /**
+     * Constructs an AddTodoCommand with the user input.
+     * @param input the full user input string containing the task description
+     */
     public AddTodoCommand(String input) {
         this.input = input;
     }

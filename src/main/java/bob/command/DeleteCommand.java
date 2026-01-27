@@ -7,9 +7,17 @@ import bob.ui.Ui;
 import bob.storage.Storage;
 import java.io.IOException;
 
+/**
+ * Command to delete a task from the task list.
+ * Parses the task index from input and removes it from storage.
+ */
 public class DeleteCommand extends BaseCommand {
     private String input;
 
+    /**
+     * Constructs a DeleteCommand with the user input.
+     * @param input the user input string containing the task index to delete
+     */
     public DeleteCommand(String input) {
         this.input = input;
     }
