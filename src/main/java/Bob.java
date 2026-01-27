@@ -1,5 +1,8 @@
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -89,8 +92,12 @@ public class Bob {
                         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()) {
                             throw new BobException("The description or date of a deadline cannot be empty.");
                         }
-                        Task deadlineTask = new Deadline(deadlineParts[0], deadlineParts[1]);
-                        addTask(deadlineTask, tasks);
+                        try {
+                            Task deadlineTask = new Deadline(deadlineParts[0], deadlineParts[1]);
+                            addTask(deadlineTask, tasks);
+                        } catch (IllegalArgumentException e) {
+                            throw new BobException(e.getMessage());
+                        }
                         break;
 
                     case EVENT:
@@ -101,11 +108,20 @@ public class Bob {
                         if (eventParts.length < 3) {
                             throw new BobException("The description, from, or to of an event cannot be empty.");
                         }
-                        Task eventTask = new Event(eventParts[0], eventParts[1], eventParts[2]);
-                        addTask(eventTask, tasks);
+                        try {
+                            Task eventTask = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                            addTask(eventTask, tasks);
+                        } catch (IllegalArgumentException e) {
+                            throw new BobException(e.getMessage());
+                        }
                         break;
 
-                    case UNKNOWN:
+                    case FIND:
+                        if (input.trim().length() <= 4) {
+                            throw new BobException("Please specify a date to search for (format: yyyy-MM-dd).");
+                        }
+                        handleFindByDate(input.substring(5), tasks);
+                        break;
                     default:
                         throw new BobException("I'm sorry, but I don't know what that means :-(");
                 }
@@ -185,6 +201,45 @@ public class Bob {
         System.out.println(" Noted. I've removed this task:");
         System.out.println("   " + removedTask);
         System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println(line);
+    }
+
+    // Find tasks by date
+    private static void handleFindByDate(String dateStr, List<Task> tasks) throws BobException {
+        String line = "____________________________________________________________";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        LocalDate searchDate;
+        try {
+            searchDate = LocalDate.parse(dateStr.trim(), dateFormat);
+        } catch (DateTimeParseException e) {
+            throw new BobException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+        }
+
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t instanceof Deadline) {
+                Deadline d = (Deadline) t;
+                if (d.getDate().equals(searchDate)) {
+                    matchingTasks.add(t);
+                }
+            } else if (t instanceof Event) {
+                Event e = (Event) t;
+                if (!e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate)) {
+                    matchingTasks.add(t);
+                }
+            }
+        }
+
+        System.out.println(line);
+        if (matchingTasks.isEmpty()) {
+            System.out.println(" No tasks found for " + dateStr);
+        } else {
+            System.out.println(" Here are the tasks on or around " + dateStr + ":");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println(" " + (i + 1) + "." + matchingTasks.get(i));
+            }
+        }
         System.out.println(line);
     }
 }

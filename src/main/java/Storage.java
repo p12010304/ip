@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Storage {
     private String filePath;
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -73,14 +77,27 @@ public class Storage {
                                     System.out.println("Warning: Skipping corrupted deadline (missing deadline): " + line);
                                     continue;
                                 }
-                                t = new Deadline(p[2], p[3]);
+                                try {
+                                    LocalDate deadlineDate = LocalDate.parse(p[3].trim(), DATE_FORMAT);
+                                    t = new Deadline(p[2], deadlineDate);
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Warning: Skipping deadline with invalid date format: " + line);
+                                    continue;
+                                }
                                 break;
                             case "E":
                                 if (p.length < 5) {
                                     System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
                                     continue;
                                 }
-                                t = new Event(p[2], p[3], p[4]);
+                                try {
+                                    LocalDate eventFrom = LocalDate.parse(p[3].trim(), DATE_FORMAT);
+                                    LocalDate eventTo = LocalDate.parse(p[4].trim(), DATE_FORMAT);
+                                    t = new Event(p[2], eventFrom, eventTo);
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Warning: Skipping event with invalid date format: " + line);
+                                    continue;
+                                }
                                 break;
                             default:
                                 System.out.println("Warning: Skipping line with unknown task type: " + line);

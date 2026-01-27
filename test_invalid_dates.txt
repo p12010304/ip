@@ -1,0 +1,6 @@
+deadline invalid date /by 2019/12/02
+deadline another invalid /by 12/02/2019
+deadline valid format /by 2019-12-20
+find invalid-date-format
+list
+bye
