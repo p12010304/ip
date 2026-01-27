@@ -71,6 +71,15 @@ public class Task {
     }
 
     /**
+     * Returns the description of this task.
+     *
+     * @return the task description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
      * Returns a string representation of this task for display.
      * Format: [Status] Description
      *

@@ -153,4 +153,21 @@ public class TaskList {
         }
         return matchingTasks;
     }
+
+    /**
+     * Finds all tasks that contain the given keyword in their description.
+     *
+     * @param keyword the keyword to search for
+     * @return a list of tasks matching the keyword
+     */
+    public List<Task> findTasksByKeyword(String keyword) {
+        List<Task> matchingTasks = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
+        for (Task t : tasks) {
+            if (t.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matchingTasks.add(t);
+            }
+        }
+        return matchingTasks;
+    }
 }
