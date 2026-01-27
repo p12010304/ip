@@ -1,3 +1,6 @@
+package bob.storage;
+
+import bob.task.Task;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -70,7 +73,7 @@ public class Storage {
                     try {
                         switch (p[0].trim()) {
                             case "T":
-                                t = new Todo(p[2]);
+                                t = new bob.task.Todo(p[2]);
                                 break;
                             case "D":
                                 if (p.length < 4) {
@@ -79,7 +82,7 @@ public class Storage {
                                 }
                                 try {
                                     LocalDate deadlineDate = LocalDate.parse(p[3].trim(), DATE_FORMAT);
-                                    t = new Deadline(p[2], deadlineDate);
+                                    t = new bob.task.Deadline(p[2], deadlineDate);
                                 } catch (DateTimeParseException e) {
                                     System.out.println("Warning: Skipping deadline with invalid date format: " + line);
                                     continue;
@@ -93,7 +96,7 @@ public class Storage {
                                 try {
                                     LocalDate eventFrom = LocalDate.parse(p[3].trim(), DATE_FORMAT);
                                     LocalDate eventTo = LocalDate.parse(p[4].trim(), DATE_FORMAT);
-                                    t = new Event(p[2], eventFrom, eventTo);
+                                    t = new bob.task.Event(p[2], eventFrom, eventTo);
                                 } catch (DateTimeParseException e) {
                                     System.out.println("Warning: Skipping event with invalid date format: " + line);
                                     continue;
