@@ -34,9 +34,18 @@ application {
     mainClass.set("bob.Bob")
 }
 
+jar {
+    manifest {
+        attributes('Main-Class': 'bob.Bob')
+    }
+}
+
 shadowJar {
     archiveBaseName = "bob"
     archiveClassifier = null
+    manifest {
+        attributes('Main-Class': 'bob.Bob')
+    }
 }
 
 run{

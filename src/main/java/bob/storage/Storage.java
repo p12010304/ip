@@ -13,14 +13,30 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles persistence of tasks to and from a file.
+ * Manages saving tasks to disk and loading them back into memory.
+ */
 public class Storage {
     private String filePath;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Constructs a Storage instance with the specified file path.
+     *
+     * @param filePath the path to the file for storing tasks
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the list of tasks to the file.
+     * Creates parent directories if they don't exist.
+     *
+     * @param tasks the list of tasks to save
+     * @throws IOException if an I/O error occurs while writing to the file
+     */
     public void save(List<Task> tasks) throws IOException {
         Path path = Paths.get(filePath);
         File f = path.toFile();
@@ -41,6 +57,14 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the file.
+     * Returns an empty list if the file doesn't exist.
+     * Skips corrupted or invalid lines with warnings.
+     *
+     * @return the list of loaded tasks
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public List<Task> load() throws IOException {
         List<Task> loadedTasks = new ArrayList<>();
         
