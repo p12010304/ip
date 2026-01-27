@@ -1,4 +1,25 @@
+package bob.parser;
+
+import bob.command.AddDeadlineCommand;
+import bob.command.AddEventCommand;
+import bob.command.AddTodoCommand;
+import bob.command.BaseCommand;
+import bob.command.CommandType;
+import bob.command.DeleteCommand;
+import bob.command.ExitCommand;
+import bob.command.FindCommand;
+import bob.command.ListCommand;
+import bob.command.MarkCommand;
+import bob.command.UnknownCommand;
+import bob.command.UnmarkCommand;
+import bob.exception.BobException;
+import bob.task.Task;
+import bob.task.Todo;
+import bob.task.Deadline;
+import bob.task.Event;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Parser {
     
@@ -91,16 +112,12 @@ public class Parser {
     }
 
     public static LocalDate parseDate(String dateStr) throws BobException {
-        java.time.format.DateTimeFormatter dateFormat = 
-            java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateFormat = 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             return LocalDate.parse(dateStr.trim(), dateFormat);
-        } catch (java.time.format.DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             throw new BobException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
         }
-    }
-
-    private enum CommandType {
-        TODO, DEADLINE, EVENT, LIST, MARK, UNMARK, DELETE, BYE, FIND, UNKNOWN
     }
 }

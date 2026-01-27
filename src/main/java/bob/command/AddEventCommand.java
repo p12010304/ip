@@ -1,13 +1,23 @@
-public class AddDeadlineCommand extends BaseCommand {
+package bob.command;
+
+import bob.exception.BobException;
+import bob.parser.Parser;
+import bob.task.Task;
+import bob.tasklist.TaskList;
+import bob.ui.Ui;
+import bob.storage.Storage;
+import java.io.IOException;
+
+public class AddEventCommand extends BaseCommand {
     private String input;
 
-    public AddDeadlineCommand(String input) {
+    public AddEventCommand(String input) {
         this.input = input;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        Task task = Parser.parseAddDeadline(input);
+        Task task = Parser.parseAddEvent(input);
         tasks.addTask(task);
         ui.showTaskAdded(task, tasks.getSize());
         saveTask(storage, tasks, ui);
@@ -16,7 +26,7 @@ public class AddDeadlineCommand extends BaseCommand {
     private void saveTask(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             ui.showError("Error saving task: " + e.getMessage());
         }
     }

@@ -1,3 +1,13 @@
+package bob.command;
+
+import bob.exception.BobException;
+import bob.parser.Parser;
+import bob.task.Task;
+import bob.tasklist.TaskList;
+import bob.ui.Ui;
+import bob.storage.Storage;
+import java.io.IOException;
+
 public class AddTodoCommand extends BaseCommand {
     private String input;
 
@@ -16,7 +26,7 @@ public class AddTodoCommand extends BaseCommand {
     private void saveTask(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             ui.showError("Error saving task: " + e.getMessage());
         }
     }
