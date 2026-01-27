@@ -1,16 +1,26 @@
 package bob.command;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.time.LocalDate;
-import java.util.List;
 
+/**
+ * Command to find tasks on a specific date.
+ * Searches for Deadline tasks with exact date match and Event tasks that contain the date.
+ */
 public class FindCommand extends BaseCommand {
     private String input;
 
+    /**
+     * Constructs a FindCommand with the user input.
+     *
+     * @param input the user input string containing the date to search for (format: yyyy-MM-dd)
+     */
     public FindCommand(String input) {
         this.input = input;
     }

@@ -1,6 +1,5 @@
 package bob.storage;
 
-import bob.task.Task;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,14 +12,32 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bob.task.Task;
+
+/**
+ * Manages persistence of tasks to disk.
+ * Handles saving tasks to a file and loading tasks from a file.
+ */
 public class Storage {
     private String filePath;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Constructs a Storage instance with the given file path.
+     *
+     * @param filePath the path to the file where tasks will be persisted
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the given list of tasks to the storage file.
+     * Creates parent directories if they don't exist.
+     *
+     * @param tasks the list of tasks to save
+     * @throws IOException if an I/O error occurs while writing
+     */
     public void save(List<Task> tasks) throws IOException {
         Path path = Paths.get(filePath);
         File f = path.toFile();
@@ -41,6 +58,14 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the storage file.
+     * If the file doesn't exist, returns an empty list.
+     * Skips corrupted lines and prints warnings for invalid data.
+     *
+     * @return a list of loaded tasks
+     * @throws IOException if an I/O error occurs while reading
+     */
     public List<Task> load() throws IOException {
         List<Task> loadedTasks = new ArrayList<>();
         

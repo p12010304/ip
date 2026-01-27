@@ -1,16 +1,26 @@
 package bob.command;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.task.Task;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.io.IOException;
 
+/**
+ * Command to add a new Deadline task to the task list.
+ * Parses the input to create a Deadline task with a due date and saves it to storage.
+ */
 public class AddDeadlineCommand extends BaseCommand {
     private String input;
 
+    /**
+     * Constructs an AddDeadlineCommand with the user input.
+     *
+     * @param input the full user input string containing task description and /by date
+     */
     public AddDeadlineCommand(String input) {
         this.input = input;
     }

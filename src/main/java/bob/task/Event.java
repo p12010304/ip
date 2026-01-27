@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
+/**
+ * Represents a task that occurs over a date range.
+ * An event has a description, a start date (from), and an end date (to).
+ */
 public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
@@ -12,18 +16,40 @@ public class Event extends Task {
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
                                                                               .withLocale(Locale.ENGLISH);
 
+    /**
+     * Constructs an Event with the given description and date range.
+     *
+     * @param description the event description
+     * @param from the start date as a string in format yyyy-MM-dd
+     * @param to the end date as a string in format yyyy-MM-dd
+     * @throws IllegalArgumentException if either date format is invalid
+     */
     public Event(String description, String from, String to) {
         super(description);
         this.from = parseDate(from);
         this.to = parseDate(to);
     }
 
+    /**
+     * Constructs an Event with the given description and date range.
+     *
+     * @param description the event description
+     * @param from the start date as a LocalDate
+     * @param to the end date as a LocalDate
+     */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
+    /**
+     * Parses a date string into a LocalDate.
+     *
+     * @param dateStr the date string in format yyyy-MM-dd
+     * @return the parsed LocalDate
+     * @throws IllegalArgumentException if the date format is invalid
+     */
     private static LocalDate parseDate(String dateStr) throws IllegalArgumentException {
         try {
             return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);

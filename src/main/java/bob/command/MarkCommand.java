@@ -1,15 +1,25 @@
 package bob.command;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.io.IOException;
 
+/**
+ * Command to mark a task as done.
+ * Parses the task index from input and updates the task's completion status.
+ */
 public class MarkCommand extends BaseCommand {
     private String input;
 
+    /**
+     * Constructs a MarkCommand with the user input.
+     *
+     * @param input the user input string containing the task index to mark as done
+     */
     public MarkCommand(String input) {
         this.input = input;
     }

@@ -5,22 +5,46 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
+/**
+ * Represents a task with a deadline.
+ * A deadline has a description and a due date (the 'by' date).
+ */
 public class Deadline extends Task {
     protected LocalDate by;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
                                                                               .withLocale(Locale.ENGLISH);
 
+    /**
+     * Constructs a Deadline with the given description and due date.
+     *
+     * @param description the task description
+     * @param by the due date as a string in format yyyy-MM-dd
+     * @throws IllegalArgumentException if the date format is invalid
+     */
     public Deadline(String description, String by) {
         super(description);
         this.by = parseDate(by);
     }
 
+    /**
+     * Constructs a Deadline with the given description and due date.
+     *
+     * @param description the task description
+     * @param by the due date as a LocalDate
+     */
     public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;
     }
 
+    /**
+     * Parses a date string into a LocalDate.
+     *
+     * @param dateStr the date string in format yyyy-MM-dd
+     * @return the parsed LocalDate
+     * @throws IllegalArgumentException if the date format is invalid
+     */
     private static LocalDate parseDate(String dateStr) throws IllegalArgumentException {
         try {
             return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);
