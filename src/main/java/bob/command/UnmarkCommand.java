@@ -1,12 +1,17 @@
 package bob.command;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.io.IOException;
 
+/**
+ * Command to mark a task as not done.
+ * Parses the task index from input and updates the task's completion status.
+ */
 /**
  * Command to mark a task as not done.
  * Parses the task index from input and updates the task's completion status.

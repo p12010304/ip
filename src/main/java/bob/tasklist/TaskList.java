@@ -1,12 +1,13 @@
 package bob.tasklist;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import bob.exception.BobException;
 import bob.task.Task;
 import bob.task.Deadline;
 import bob.task.Event;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Manages a collection of tasks.
@@ -15,6 +16,9 @@ import java.util.List;
 public class TaskList {
     private List<Task> tasks;
 
+    /**
+     * Constructs an empty TaskList.
+     */
     /**
      * Constructs an empty TaskList.
      */
@@ -109,6 +113,11 @@ public class TaskList {
         return tasks.size();
     }
 
+    /**
+     * Checks if the task list is empty.
+     *
+     * @return true if the list contains no tasks, false otherwise
+     */
     /**
      * Checks if the task list is empty.
      *

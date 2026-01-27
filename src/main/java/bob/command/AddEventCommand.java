@@ -1,13 +1,18 @@
 package bob.command;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.task.Task;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.io.IOException;
 
+/**
+ * Command to add a new Event task to the task list.
+ * Parses the input to create an Event task with a date range and saves it to storage.
+ */
 /**
  * Command to add a new Event task to the task list.
  * Parses the input to create an Event task with a date range and saves it to storage.

@@ -9,6 +9,10 @@ import bob.storage.Storage;
  * Abstract base class for all commands in the Bob application.
  * Defines the contract that all command implementations must follow.
  */
+/**
+ * Abstract base class for all commands in the Bob application.
+ * Defines the contract that all command implementations must follow.
+ */
 public abstract class BaseCommand {
     /**
      * Executes the command with the given task list, user interface, and storage.

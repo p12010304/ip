@@ -1,6 +1,5 @@
 package bob.storage;
 
-import bob.task.Task;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

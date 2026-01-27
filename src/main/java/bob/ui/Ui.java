@@ -1,6 +1,5 @@
 package bob.ui;
 
-import bob.task.Task;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,10 +14,16 @@ public class Ui {
     /**
      * Constructs a new Ui instance with a Scanner for reading user input.
      */
+    /**
+     * Constructs a new Ui instance with a Scanner for reading user input.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Displays the welcome message when the application starts.
+     */
     /**
      * Displays the welcome message when the application starts.
      */
@@ -32,12 +37,18 @@ public class Ui {
     /**
      * Displays the exit message when the user quits the application.
      */
+    /**
+     * Displays the exit message when the user quits the application.
+     */
     public void showExit() {
         showLine();
         println(" Bye. Hope to see you again soon!");
         showLine();
     }
 
+    /**
+     * Displays a dividing line to separate output sections.
+     */
     /**
      * Displays a dividing line to separate output sections.
      */
@@ -69,6 +80,10 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    /**
+     * Displays an error message indicating a failure to load the task list from storage.
+     * Informs the user that the application will start with an empty list.
+     */
     /**
      * Displays an error message indicating a failure to load the task list from storage.
      * Informs the user that the application will start with an empty list.

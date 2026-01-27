@@ -1,13 +1,18 @@
 package bob.command;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.time.LocalDate;
-import java.util.List;
 
+/**
+ * Command to find tasks on a specific date.
+ * Searches for Deadline tasks with exact date match and Event tasks that contain the date.
+ */
 /**
  * Command to find tasks on a specific date.
  * Searches for Deadline tasks with exact date match and Event tasks that contain the date.

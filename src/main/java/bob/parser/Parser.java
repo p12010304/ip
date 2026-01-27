@@ -1,5 +1,9 @@
 package bob.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import bob.command.AddDeadlineCommand;
 import bob.command.AddEventCommand;
 import bob.command.AddTodoCommand;
@@ -17,9 +21,6 @@ import bob.task.Task;
 import bob.task.Todo;
 import bob.task.Deadline;
 import bob.task.Event;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * Parses user input and creates appropriate command and task objects.

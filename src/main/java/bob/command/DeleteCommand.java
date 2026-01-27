@@ -1,12 +1,17 @@
 package bob.command;
 
+import java.io.IOException;
+
 import bob.exception.BobException;
 import bob.parser.Parser;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
 import bob.storage.Storage;
-import java.io.IOException;
 
+/**
+ * Command to delete a task from the task list.
+ * Parses the task index from input and removes it from storage.
+ */
 /**
  * Command to delete a task from the task list.
  * Parses the task index from input and removes it from storage.
