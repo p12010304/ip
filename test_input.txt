@@ -1,5 +1,0 @@
-todo read book
-deadline return book /by June 6th
-event project meeting /from Aug 6th /to 2-4pm
-list
-bye
