@@ -1,0 +1,11 @@
+deadline submit report /by 2025-02-28
+deadline finish project /by 2025-03-15
+event team meeting /from 2025-02-28 /to 2025-02-28
+event conference /from 2025-03-10 /to 2025-03-12
+list
+mark 1
+mark 3
+find 2025-02-28
+mark 2
+list
+bye
