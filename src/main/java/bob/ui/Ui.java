@@ -47,19 +47,23 @@ public class Ui {
     }
 
     /**
-     * Prints a message to the console followed by a newline.
-     * @param message the text to display
+     * Prints messages to the console, each followed by a newline.
+     * @param messages the text messages to display
      */
-    public void println(String message) {
-        System.out.println(message);
+    public void println(String... messages) {
+        for (String message : messages) {
+            System.out.println(message);
+        }
     }
 
     /**
-     * Prints a message to the console without a newline.
-     * @param message the text to display
+     * Prints messages to the console without newlines.
+     * @param messages the text messages to display
      */
-    public void print(String message) {
-        System.out.print(message);
+    public void print(String... messages) {
+        for (String message : messages) {
+            System.out.print(message);
+        }
     }
 
     /**
