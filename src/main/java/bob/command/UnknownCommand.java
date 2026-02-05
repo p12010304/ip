@@ -14,4 +14,9 @@ public class UnknownCommand extends BaseCommand {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
         throw new BobException("I'm sorry, but I don't know what that means :-(");
     }
+
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        throw new BobException("I'm sorry, but I don't know what that means :-(");
+    }
 }

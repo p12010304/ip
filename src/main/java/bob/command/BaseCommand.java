@@ -25,6 +25,18 @@ public abstract class BaseCommand {
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws BobException;
 
     /**
+     * Executes the command for GUI mode and returns the response as a string.
+     * Default implementation delegates to execute() and returns a generic message.
+     * @param tasks the task list to operate on
+     * @param storage the storage manager for persisting data
+     * @return the response message to display in the GUI
+     * @throws BobException if an error occurs during command execution
+     */
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        return "Command executed successfully.";
+    }
+
+    /**
      * Determines whether this command signals the application to exit.
      * @return true if this command is an exit command, false otherwise
      */

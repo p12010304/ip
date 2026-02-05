@@ -35,11 +35,28 @@ public class DeleteCommand extends BaseCommand {
         saveTask(storage, tasks, ui);
     }
 
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        int idx = Parser.parseTaskIndex(input);
+        bob.task.Task removedTask = tasks.deleteTask(idx);
+        saveTaskQuiet(storage, tasks);
+        return "Noted. I've removed this task:\n  " + removedTask.toString()
+                + "\nNow you have " + tasks.getSize() + " tasks in the list.";
+    }
+
     private void saveTask(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
             ui.showError("Error saving task: " + e.getMessage());
+        }
+    }
+
+    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+        try {
+            storage.save(tasks.getAllTasks());
+        } catch (IOException e) {
+            throw new BobException("Error saving task: " + e.getMessage());
         }
     }
 }

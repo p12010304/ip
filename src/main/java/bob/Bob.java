@@ -41,6 +41,29 @@ public class Bob {
     }
 
     /**
+     * Default constructor that uses the default file path.
+     */
+    public Bob() {
+        this(FILE_PATH);
+    }
+
+    /**
+     * Generates a response for the user's input.
+     * Used by the GUI to get Bob's response to user commands.
+     *
+     * @param input the user's command
+     * @return Bob's response as a string
+     */
+    public String getResponse(String input) {
+        try {
+            BaseCommand command = Parser.parseCommand(input);
+            return command.executeForGui(tasks, storage);
+        } catch (BobException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
      * Runs the main application loop.
      * Continuously reads user commands, parses them, executes them, and handles errors
      * until the user exits the application.
