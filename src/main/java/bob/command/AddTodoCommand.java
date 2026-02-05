@@ -11,41 +11,37 @@ import bob.storage.Storage;
 
 /**
  * Command to add a new Todo task to the task list.
- * Parses the input to create a Todo task and saves it to storage.
- */
-/**
- * Command to add a new Todo task to the task list.
- * Parses the input to create a Todo task and saves it to storage.
+ * Parses the user input to create a Todo task and saves it to storage.
  */
 public class AddTodoCommand extends BaseCommand {
-    private String input;
+    private String userInput;
 
     /**
      * Constructs an AddTodoCommand with the user input.
-     * @param input the full user input string containing the task description
+     * @param userInput the full user input string containing the task description
      */
-    public AddTodoCommand(String input) {
-        this.input = input;
+    public AddTodoCommand(String userInput) {
+        this.userInput = userInput;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        Task task = Parser.parseAddTodo(input);
+        Task task = Parser.parseAddTodo(userInput);
         tasks.addTask(task);
         ui.showTaskAdded(task, tasks.getSize());
-        saveTask(storage, tasks, ui);
+        saveTasks(storage, tasks, ui);
     }
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        Task task = Parser.parseAddTodo(input);
+        Task task = Parser.parseAddTodo(userInput);
         tasks.addTask(task);
-        saveTaskQuiet(storage, tasks);
+        saveTasksQuiet(storage, tasks);
         return "Got it. I've added this task:\n  " + task.toString()
                 + "\nNow you have " + tasks.getSize() + " tasks in the list.";
     }
 
-    private void saveTask(Storage storage, TaskList tasks, Ui ui) {
+    private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
@@ -53,7 +49,7 @@ public class AddTodoCommand extends BaseCommand {
         }
     }
 
-    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+    private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {

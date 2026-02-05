@@ -1,7 +1,10 @@
 package bob.storage;
 
 import bob.exception.BobException;
-import bob.task.*;
+import bob.task.Task;
+import bob.task.Todo;
+import bob.task.Deadline;
+import bob.task.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

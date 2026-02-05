@@ -14,19 +14,19 @@ import bob.storage.Storage;
  * Searches for tasks that contain the keyword in their description.
  */
 public class FindCommand extends BaseCommand {
-    private String input;
+    private String userInput;
 
     /**
      * Constructs a FindCommand with the user input.
-     * @param input the user input string containing the keyword to search for (e.g., "find book")
+     * @param userInput the user input string containing the keyword to search for (e.g., "find book")
      */
-    public FindCommand(String input) {
-        this.input = input;
+    public FindCommand(String userInput) {
+        this.userInput = userInput;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        String keyword = input.substring(4).trim();
+        String keyword = userInput.substring(4).trim();
         if (keyword.isEmpty()) {
             throw new BobException("Please provide a keyword to search for.");
         }
@@ -36,7 +36,7 @@ public class FindCommand extends BaseCommand {
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        String keyword = input.substring(4).trim();
+        String keyword = userInput.substring(4).trim();
         if (keyword.isEmpty()) {
             throw new BobException("Please provide a keyword to search for.");
         }

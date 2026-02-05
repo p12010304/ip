@@ -11,41 +11,37 @@ import bob.storage.Storage;
 
 /**
  * Command to add a new Deadline task to the task list.
- * Parses the input to create a Deadline task with a due date and saves it to storage.
- */
-/**
- * Command to add a new Deadline task to the task list.
- * Parses the input to create a Deadline task with a due date and saves it to storage.
+ * Parses the user input to create a Deadline task with a due date and saves it to storage.
  */
 public class AddDeadlineCommand extends BaseCommand {
-    private String input;
+    private String userInput;
 
     /**
      * Constructs an AddDeadlineCommand with the user input.
-     * @param input the full user input string containing task description and /by date
+     * @param userInput the full user input string containing task description and /by date
      */
-    public AddDeadlineCommand(String input) {
-        this.input = input;
+    public AddDeadlineCommand(String userInput) {
+        this.userInput = userInput;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        Task task = Parser.parseAddDeadline(input);
+        Task task = Parser.parseAddDeadline(userInput);
         tasks.addTask(task);
         ui.showTaskAdded(task, tasks.getSize());
-        saveTask(storage, tasks, ui);
+        saveTasks(storage, tasks, ui);
     }
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        Task task = Parser.parseAddDeadline(input);
+        Task task = Parser.parseAddDeadline(userInput);
         tasks.addTask(task);
-        saveTaskQuiet(storage, tasks);
+        saveTasksQuiet(storage, tasks);
         return "Got it. I've added this task:\n  " + task.toString()
                 + "\nNow you have " + tasks.getSize() + " tasks in the list.";
     }
 
-    private void saveTask(Storage storage, TaskList tasks, Ui ui) {
+    private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
@@ -53,7 +49,7 @@ public class AddDeadlineCommand extends BaseCommand {
         }
     }
 
-    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+    private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
