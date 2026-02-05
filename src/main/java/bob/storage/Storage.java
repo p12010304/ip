@@ -27,7 +27,6 @@ import bob.task.Event;
 public class Storage {
     private String filePath;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Constructs a Storage instance with the specified file path.

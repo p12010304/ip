@@ -33,4 +33,21 @@ public class FindCommand extends BaseCommand {
         List<bob.task.Task> matchingTasks = tasks.findTasksByKeyword(keyword);
         ui.showTasksFound(matchingTasks, keyword);
     }
+
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        String keyword = input.substring(4).trim();
+        if (keyword.isEmpty()) {
+            throw new BobException("Please provide a keyword to search for.");
+        }
+        List<bob.task.Task> matchingTasks = tasks.findTasksByKeyword(keyword);
+        if (matchingTasks.isEmpty()) {
+            return "No matching tasks found.";
+        }
+        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            sb.append((i + 1)).append(".").append(matchingTasks.get(i).toString()).append("\n");
+        }
+        return sb.toString().trim();
+    }
 }

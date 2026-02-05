@@ -15,8 +15,11 @@ public class ExitCommand extends BaseCommand {
         ui.showExit();
     }
 
-    @Override
-    public boolean isExit() {
+    @Override    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        return "Bye. Hope to see you again soon!";
+    }
+
+    @Override    public boolean isExit() {
         return true;
     }
 }

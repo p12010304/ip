@@ -36,11 +36,28 @@ public class AddTodoCommand extends BaseCommand {
         saveTask(storage, tasks, ui);
     }
 
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        Task task = Parser.parseAddTodo(input);
+        tasks.addTask(task);
+        saveTaskQuiet(storage, tasks);
+        return "Got it. I've added this task:\n  " + task.toString()
+                + "\nNow you have " + tasks.getSize() + " tasks in the list.";
+    }
+
     private void saveTask(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
             ui.showError("Error saving task: " + e.getMessage());
+        }
+    }
+
+    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+        try {
+            storage.save(tasks.getAllTasks());
+        } catch (IOException e) {
+            throw new BobException("Error saving task: " + e.getMessage());
         }
     }
 }

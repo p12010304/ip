@@ -35,11 +35,27 @@ public class UnmarkCommand extends BaseCommand {
         saveTask(storage, tasks, ui);
     }
 
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+        int idx = Parser.parseTaskIndex(input);
+        tasks.unmarkTask(idx);
+        saveTaskQuiet(storage, tasks);
+        return "OK, I've marked this task as not done yet:\n  " + tasks.getTask(idx).toString();
+    }
+
     private void saveTask(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
             ui.showError("Error saving task: " + e.getMessage());
+        }
+    }
+
+    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+        try {
+            storage.save(tasks.getAllTasks());
+        } catch (IOException e) {
+            throw new BobException("Error saving task: " + e.getMessage());
         }
     }
 }
