@@ -66,10 +66,9 @@ public class Task {
      * @return the file format string
      */
     public String toFileString() {
-        return String.format("%s | %d | %s", 
-            (this instanceof Todo ? "T" : this instanceof Deadline ? "D" : "E"),
-            (isDone ? 1 : 0), 
-            description);
+        String type = this instanceof Todo ? "T" : this instanceof Deadline ? "D" : "E";
+        int status = isDone ? 1 : 0;
+        return String.format("%s | %d | %s", type, status, description);
     }
 
     /**
