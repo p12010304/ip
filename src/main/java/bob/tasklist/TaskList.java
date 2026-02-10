@@ -2,6 +2,7 @@ package bob.tasklist;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -166,5 +167,13 @@ public class TaskList {
         return tasks.stream()
                 .filter(t -> t.getDescription().toLowerCase().contains(lowerKeyword))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Sorts tasks alphabetically by their description.
+     * The sort is case-insensitive.
+     */
+    public void sortTasks() {
+        tasks.sort(Comparator.comparing(task -> task.getDescription().toLowerCase()));
     }
 }

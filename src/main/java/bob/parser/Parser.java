@@ -14,6 +14,7 @@ import bob.command.ExitCommand;
 import bob.command.FindCommand;
 import bob.command.ListCommand;
 import bob.command.MarkCommand;
+import bob.command.SortCommand;
 import bob.command.UnknownCommand;
 import bob.command.UnmarkCommand;
 import bob.exception.BobException;
@@ -49,27 +50,29 @@ public class Parser {
         }
 
         switch (cmd) {
-        case TODO:
-            return new AddTodoCommand(input);
-        case DEADLINE:
-            return new AddDeadlineCommand(input);
-        case EVENT:
-            return new AddEventCommand(input);
-        case LIST:
-            return new ListCommand();
-        case MARK:
-            return new MarkCommand(input);
-        case UNMARK:
-            return new UnmarkCommand(input);
-        case DELETE:
-            return new DeleteCommand(input);
-        case FIND:
-            return new FindCommand(input);
-        case BYE:
-            return new ExitCommand();
-        case UNKNOWN:
-        default:
-            return new UnknownCommand();
+            case TODO:
+                return new AddTodoCommand(input);
+            case DEADLINE:
+                return new AddDeadlineCommand(input);
+            case EVENT:
+                return new AddEventCommand(input);
+            case LIST:
+                return new ListCommand();
+            case MARK:
+                return new MarkCommand(input);
+            case UNMARK:
+                return new UnmarkCommand(input);
+            case DELETE:
+                return new DeleteCommand(input);
+            case FIND:
+                return new FindCommand(input);
+            case SORT:
+                return new SortCommand();
+            case BYE:
+                return new ExitCommand();
+            case UNKNOWN:
+            default:
+                return new UnknownCommand();
         }
     }
 
