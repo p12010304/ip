@@ -2,7 +2,9 @@ package bob.tasklist;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import bob.exception.BobException;
 import bob.task.Deadline;
@@ -39,9 +41,7 @@ public class TaskList {
      * @param tasks the task(s) to add
      */
     public void addTask(Task... tasks) {
-        for (Task task : tasks) {
-            this.tasks.add(task);
-        }
+        Arrays.stream(tasks).forEach(this.tasks::add);
     }
 
     /**
@@ -141,21 +141,18 @@ public class TaskList {
      * @return a list of tasks matching the date
      */
     public List<Task> findTasksByDate(LocalDate searchDate) {
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t instanceof Deadline) {
-                Deadline d = (Deadline) t;
-                if (d.getDate().equals(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            } else if (t instanceof Event) {
-                Event e = (Event) t;
-                if (!e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> {
+                    if (t instanceof Deadline) {
+                        Deadline d = (Deadline) t;
+                        return d.getDate().equals(searchDate);
+                    } else if (t instanceof Event) {
+                        Event e = (Event) t;
+                        return !e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate);
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -165,13 +162,9 @@ public class TaskList {
      * @return a list of tasks matching the keyword
      */
     public List<Task> findTasksByKeyword(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (Task t : tasks) {
-            if (t.getDescription().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(t);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> t.getDescription().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
     }
 }
