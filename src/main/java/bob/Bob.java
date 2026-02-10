@@ -17,7 +17,7 @@ import bob.ui.Ui;
  */
 public class Bob {
     private static final String FILE_PATH = Paths.get("data", "bob.txt").toString();
-    
+
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -71,14 +71,14 @@ public class Bob {
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
-        
+
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
                 if (fullCommand.trim().isEmpty()) {
                     continue;
                 }
-                
+
                 ui.showLine();
                 BaseCommand command = Parser.parseCommand(fullCommand);
                 command.execute(tasks, ui, storage);

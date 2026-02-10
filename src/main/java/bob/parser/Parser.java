@@ -28,7 +28,7 @@ import bob.task.Todo;
  * Handles command parsing, task creation, and date parsing with validation.
  */
 public class Parser {
-    
+
     /**
      * Parses a user input string and returns the corresponding command.
      *
@@ -40,7 +40,7 @@ public class Parser {
         if (input.trim().isEmpty()) {
             throw new BobException("Command cannot be empty.");
         }
-        
+
         String firstWord = input.split(" ")[0].toUpperCase();
         CommandType cmd;
         try {
@@ -149,7 +149,11 @@ public class Parser {
             throw new BobException("Please specify a task number.");
         }
         try {
-            return Integer.parseInt(parts[1]) - 1;
+            int taskNumber = Integer.parseInt(parts[1]);
+            int zeroBasedIndex = taskNumber - 1;
+            // Assert that conversion from 1-based to 0-based indexing is correct
+            assert zeroBasedIndex == taskNumber - 1 : "Index conversion must be correct";
+            return zeroBasedIndex;
         } catch (NumberFormatException e) {
             throw new BobException("Please provide a valid task number.");
         }
@@ -163,7 +167,7 @@ public class Parser {
      * @throws BobException if the date format is invalid
      */
     public static LocalDate parseDate(String dateStr) throws BobException {
-        DateTimeFormatter dateFormat = 
+        DateTimeFormatter dateFormat =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             return LocalDate.parse(dateStr.trim(), dateFormat);

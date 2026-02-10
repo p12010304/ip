@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import bob.exception.BobException;
 import bob.parser.Parser;
+import bob.storage.Storage;
 import bob.task.Task;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
-import bob.storage.Storage;
 
 /**
  * Command to add a new Todo task to the task list.

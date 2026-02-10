@@ -1,9 +1,9 @@
 package bob.command;
 
 import bob.exception.BobException;
+import bob.storage.Storage;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
-import bob.storage.Storage;
 
 /**
  * Command for unrecognized user input.

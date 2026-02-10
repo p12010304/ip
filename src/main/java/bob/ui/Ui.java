@@ -1,7 +1,9 @@
 package bob.ui;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import bob.task.Task;
 
@@ -51,9 +53,7 @@ public class Ui {
      * @param messages the text messages to display
      */
     public void println(String... messages) {
-        for (String message : messages) {
-            System.out.println(message);
-        }
+        Arrays.stream(messages).forEach(System.out::println);
     }
 
     /**
@@ -61,9 +61,7 @@ public class Ui {
      * @param messages the text messages to display
      */
     public void print(String... messages) {
-        for (String message : messages) {
-            System.out.print(message);
-        }
+        Arrays.stream(messages).forEach(System.out::print);
     }
 
     /**
@@ -74,8 +72,6 @@ public class Ui {
         return scanner.nextLine();
     }
 
-    /**
-     * Displays an error message indicating a failure to load the task list from storage.
     /**
      * Displays an error message indicating a failure to load the task list from storage.
      * Informs the user that the application will start with an empty list.
@@ -121,9 +117,8 @@ public class Ui {
             println(" Your task list is empty.");
         } else {
             println(" Here are the tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                println(" " + (i + 1) + "." + tasks.get(i));
-            }
+            IntStream.range(0, tasks.size())
+                    .forEach(i -> println(" " + (i + 1) + "." + tasks.get(i)));
         }
         showLine();
     }
@@ -210,9 +205,8 @@ public class Ui {
             println(" No matching tasks found for \"" + keyword + "\"");
         } else {
             println(" Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                println(" " + (i + 1) + "." + matchingTasks.get(i));
-            }
+            IntStream.range(0, matchingTasks.size())
+                    .forEach(i -> println(" " + (i + 1) + "." + matchingTasks.get(i)));
         }
         showLine();
     }

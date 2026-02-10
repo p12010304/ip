@@ -3,7 +3,9 @@ package bob.tasklist;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import bob.exception.BobException;
 import bob.task.Deadline;
@@ -40,9 +42,7 @@ public class TaskList {
      * @param tasks the task(s) to add
      */
     public void addTask(Task... tasks) {
-        for (Task task : tasks) {
-            this.tasks.add(task);
-        }
+        Arrays.stream(tasks).forEach(this.tasks::add);
     }
 
     /**
@@ -56,7 +56,10 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new BobException("That task number doesn't exist in your list.");
         }
-        return tasks.remove(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid before deletion";
+        Task deletedTask = tasks.remove(index);
+        assert deletedTask != null : "Deleted task should not be null";
+        return deletedTask;
     }
 
     /**
@@ -70,7 +73,10 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new BobException("That task number doesn't exist in your list.");
         }
-        return tasks.get(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid";
+        Task task = tasks.get(index);
+        assert task != null : "Retrieved task should not be null";
+        return task;
     }
 
     /**
@@ -81,7 +87,9 @@ public class TaskList {
      */
     public void markTask(int index) throws BobException {
         Task task = getTask(index);
+        assert task != null : "Task must exist before marking";
         task.markAsDone();
+        assert task.isDone() : "Task should be marked as done after markAsDone()";
     }
 
     /**
@@ -92,7 +100,9 @@ public class TaskList {
      */
     public void unmarkTask(int index) throws BobException {
         Task task = getTask(index);
+        assert task != null : "Task must exist before unmarking";
         task.unmarkAsDone();
+        assert !task.isDone() : "Task should not be marked as done after unmarkAsDone()";
     }
 
     /**
@@ -132,21 +142,18 @@ public class TaskList {
      * @return a list of tasks matching the date
      */
     public List<Task> findTasksByDate(LocalDate searchDate) {
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t instanceof Deadline) {
-                Deadline d = (Deadline) t;
-                if (d.getDate().equals(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            } else if (t instanceof Event) {
-                Event e = (Event) t;
-                if (!e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> {
+                    if (t instanceof Deadline) {
+                        Deadline d = (Deadline) t;
+                        return d.getDate().equals(searchDate);
+                    } else if (t instanceof Event) {
+                        Event e = (Event) t;
+                        return !e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate);
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -156,14 +163,10 @@ public class TaskList {
      * @return a list of tasks matching the keyword
      */
     public List<Task> findTasksByKeyword(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (Task t : tasks) {
-            if (t.getDescription().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(t);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> t.getDescription().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
     }
 
     /**
