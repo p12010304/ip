@@ -146,7 +146,11 @@ public class Parser {
             throw new BobException("Please specify a task number.");
         }
         try {
-            return Integer.parseInt(parts[1]) - 1;
+            int taskNumber = Integer.parseInt(parts[1]);
+            int zeroBasedIndex = taskNumber - 1;
+            // Assert that conversion from 1-based to 0-based indexing is correct
+            assert zeroBasedIndex == taskNumber - 1 : "Index conversion must be correct";
+            return zeroBasedIndex;
         } catch (NumberFormatException e) {
             throw new BobException("Please provide a valid task number.");
         }
