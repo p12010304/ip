@@ -1,10 +1,5 @@
 package bob.task;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Locale;
-
 /**
  * Represents a base task in the Bob application.
  * This is an abstract base class for different types of tasks (Todo, Deadline, Event).
@@ -58,10 +53,9 @@ public class Task {
      * @return the file format string
      */
     public String toFileString() {
-        return String.format("%s | %d | %s", 
-            (this instanceof Todo ? "T" : this instanceof Deadline ? "D" : "E"),
-            (isDone ? 1 : 0), 
-            description);
+        String type = this instanceof Todo ? "T" : this instanceof Deadline ? "D" : "E";
+        int status = isDone ? 1 : 0;
+        return String.format("%s | %d | %s", type, status, description);
     }
 
     /**

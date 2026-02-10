@@ -17,17 +17,17 @@ import bob.command.MarkCommand;
 import bob.command.UnknownCommand;
 import bob.command.UnmarkCommand;
 import bob.exception.BobException;
-import bob.task.Task;
-import bob.task.Todo;
 import bob.task.Deadline;
 import bob.task.Event;
+import bob.task.Task;
+import bob.task.Todo;
 
 /**
  * Parses user input and creates appropriate command and task objects.
  * Handles command parsing, task creation, and date parsing with validation.
  */
 public class Parser {
-    
+
     /**
      * Parses a user input string and returns the corresponding command.
      *
@@ -39,7 +39,7 @@ public class Parser {
         if (input.trim().isEmpty()) {
             throw new BobException("Command cannot be empty.");
         }
-        
+
         String firstWord = input.split(" ")[0].toUpperCase();
         CommandType cmd;
         try {
@@ -49,27 +49,27 @@ public class Parser {
         }
 
         switch (cmd) {
-            case TODO:
-                return new AddTodoCommand(input);
-            case DEADLINE:
-                return new AddDeadlineCommand(input);
-            case EVENT:
-                return new AddEventCommand(input);
-            case LIST:
-                return new ListCommand();
-            case MARK:
-                return new MarkCommand(input);
-            case UNMARK:
-                return new UnmarkCommand(input);
-            case DELETE:
-                return new DeleteCommand(input);
-            case FIND:
-                return new FindCommand(input);
-            case BYE:
-                return new ExitCommand();
-            case UNKNOWN:
-            default:
-                return new UnknownCommand();
+        case TODO:
+            return new AddTodoCommand(input);
+        case DEADLINE:
+            return new AddDeadlineCommand(input);
+        case EVENT:
+            return new AddEventCommand(input);
+        case LIST:
+            return new ListCommand();
+        case MARK:
+            return new MarkCommand(input);
+        case UNMARK:
+            return new UnmarkCommand(input);
+        case DELETE:
+            return new DeleteCommand(input);
+        case FIND:
+            return new FindCommand(input);
+        case BYE:
+            return new ExitCommand();
+        case UNKNOWN:
+        default:
+            return new UnknownCommand();
         }
     }
 
@@ -160,7 +160,7 @@ public class Parser {
      * @throws BobException if the date format is invalid
      */
     public static LocalDate parseDate(String dateStr) throws BobException {
-        DateTimeFormatter dateFormat = 
+        DateTimeFormatter dateFormat =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             return LocalDate.parse(dateStr.trim(), dateFormat);

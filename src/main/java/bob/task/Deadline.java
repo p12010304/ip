@@ -10,10 +10,10 @@ import java.util.Locale;
  * A deadline has a description and a date by which it must be completed.
  */
 public class Deadline extends Task {
-    protected LocalDate by;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
                                                                               .withLocale(Locale.ENGLISH);
+    protected LocalDate by;
 
     /**
      * Constructs a new Deadline with the given description and deadline date.

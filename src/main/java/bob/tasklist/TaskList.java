@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bob.exception.BobException;
-import bob.task.Task;
 import bob.task.Deadline;
 import bob.task.Event;
+import bob.task.Task;
 
 /**
  * Manages a collection of tasks.
