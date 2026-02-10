@@ -55,7 +55,10 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new BobException("That task number doesn't exist in your list.");
         }
-        return tasks.remove(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid before deletion";
+        Task deletedTask = tasks.remove(index);
+        assert deletedTask != null : "Deleted task should not be null";
+        return deletedTask;
     }
 
     /**
@@ -69,7 +72,10 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new BobException("That task number doesn't exist in your list.");
         }
-        return tasks.get(index);
+        assert index >= 0 && index < tasks.size() : "Index must be valid";
+        Task task = tasks.get(index);
+        assert task != null : "Retrieved task should not be null";
+        return task;
     }
 
     /**
@@ -80,7 +86,9 @@ public class TaskList {
      */
     public void markTask(int index) throws BobException {
         Task task = getTask(index);
+        assert task != null : "Task must exist before marking";
         task.markAsDone();
+        assert task.isDone() : "Task should be marked as done after markAsDone()";
     }
 
     /**
@@ -91,7 +99,9 @@ public class TaskList {
      */
     public void unmarkTask(int index) throws BobException {
         Task task = getTask(index);
+        assert task != null : "Task must exist before unmarking";
         task.unmarkAsDone();
+        assert !task.isDone() : "Task should not be marked as done after unmarkAsDone()";
     }
 
     /**

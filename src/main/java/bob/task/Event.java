@@ -10,11 +10,11 @@ import java.util.Locale;
  * An event has a description, a start date, and an end date.
  */
 public class Event extends Task {
-    protected LocalDate from;
-    protected LocalDate to;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy")
                                                                               .withLocale(Locale.ENGLISH);
+    protected LocalDate from;
+    protected LocalDate to;
 
     /**
      * Constructs a new Event with the given description and date range.
