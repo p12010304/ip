@@ -50,9 +50,15 @@ public class Storage {
         // Write tasks to file
         FileWriter fw = new FileWriter(f);
         try {
-            for (Task t : tasks) {
-                fw.write(t.toFileString() + System.lineSeparator());
-            }
+            tasks.stream()
+                    .map(t -> t.toFileString() + System.lineSeparator())
+                    .forEach(line -> {
+                        try {
+                            fw.write(line);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         } finally {
             fw.close();
         }
