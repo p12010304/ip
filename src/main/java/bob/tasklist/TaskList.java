@@ -2,12 +2,13 @@ package bob.tasklist;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import bob.exception.BobException;
-import bob.task.Task;
 import bob.task.Deadline;
 import bob.task.Event;
+import bob.task.Task;
 
 /**
  * Manages a collection of tasks.
@@ -163,5 +164,13 @@ public class TaskList {
             }
         }
         return matchingTasks;
+    }
+
+    /**
+     * Sorts tasks alphabetically by their description.
+     * The sort is case-insensitive.
+     */
+    public void sortTasks() {
+        tasks.sort(Comparator.comparing(task -> task.getDescription().toLowerCase()));
     }
 }

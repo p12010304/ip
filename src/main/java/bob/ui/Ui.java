@@ -216,4 +216,13 @@ public class Ui {
         }
         showLine();
     }
+
+    /**
+     * Displays a message indicating that tasks have been sorted.
+     */
+    public void showSortedMessage() {
+        showLine();
+        println(" Got it! I've sorted your tasks alphabetically.");
+        showLine();
+    }
 }

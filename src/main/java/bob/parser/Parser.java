@@ -14,13 +14,14 @@ import bob.command.ExitCommand;
 import bob.command.FindCommand;
 import bob.command.ListCommand;
 import bob.command.MarkCommand;
+import bob.command.SortCommand;
 import bob.command.UnknownCommand;
 import bob.command.UnmarkCommand;
 import bob.exception.BobException;
-import bob.task.Task;
-import bob.task.Todo;
 import bob.task.Deadline;
 import bob.task.Event;
+import bob.task.Task;
+import bob.task.Todo;
 
 /**
  * Parses user input and creates appropriate command and task objects.
@@ -65,6 +66,8 @@ public class Parser {
                 return new DeleteCommand(input);
             case FIND:
                 return new FindCommand(input);
+            case SORT:
+                return new SortCommand();
             case BYE:
                 return new ExitCommand();
             case UNKNOWN:
