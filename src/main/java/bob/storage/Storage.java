@@ -9,16 +9,10 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import bob.task.Task;
-import bob.task.Todo;
-import bob.task.Deadline;
-import bob.task.Event;
 
 /**
  * Handles persistence of tasks to and from a file.
@@ -45,6 +39,12 @@ public class Storage {
      * @throws IOException if an I/O error occurs while writing to the file
      */
     public void save(List<Task> tasks) throws IOException {
+        // Assert that tasks list is not null and all tasks are valid
+        assert tasks != null : "Tasks list must not be null";
+        for (Task task : tasks) {
+            assert task != null : "All tasks must be non-null before saving";
+        }
+        
         Path path = Paths.get(filePath);
         File f = path.toFile();
         
@@ -57,6 +57,7 @@ public class Storage {
         FileWriter fw = new FileWriter(f);
         try {
             for (Task t : tasks) {
+                assert t.getDescription() != null : "Task description must not be null";
                 fw.write(t.toFileString() + System.lineSeparator());
             }
         } finally {
@@ -162,6 +163,11 @@ public class Storage {
             return loadedTasks;
         }
         
+        // Assert that the loaded tasks list is not null and contains only valid tasks
+        assert loadedTasks != null : "Loaded tasks list should not be null";
+        for (Task task : loadedTasks) {
+            assert task != null : "All tasks in loaded list should be non-null";
+        }
         return loadedTasks;
     }
 }

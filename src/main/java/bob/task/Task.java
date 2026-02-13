@@ -1,10 +1,5 @@
 package bob.task;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Locale;
-
 /**
  * Represents a base task in the Bob application.
  * This is an abstract base class for different types of tasks (Todo, Deadline, Event).
@@ -36,17 +31,30 @@ public class Task {
     }
 
     /**
+     * Checks if this task is marked as done.
+     *
+     * @return true if the task is done, false otherwise
+     */
+    public boolean isDone() {
+        return this.isDone;
+    }
+
+    /**
      * Marks this task as done.
      */
     public void markAsDone() {
+        assert !this.isDone : "Task should not already be marked as done";
         this.isDone = true;
+        assert this.isDone : "Task must be marked as done after markAsDone()";
     }
 
     /**
      * Marks this task as not done.
      */
     public void unmarkAsDone() {
+        assert this.isDone : "Task should be marked as done before unmarking";
         this.isDone = false;
+        assert !this.isDone : "Task must not be marked as done after unmarkAsDone()";
     }
 
     /**

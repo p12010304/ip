@@ -72,8 +72,6 @@ public class Ui {
 
     /**
      * Displays an error message indicating a failure to load the task list from storage.
-    /**
-     * Displays an error message indicating a failure to load the task list from storage.
      * Informs the user that the application will start with an empty list.
      */
     public void showLoadingError() {
