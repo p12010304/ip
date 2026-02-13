@@ -39,6 +39,12 @@ public class Storage {
      * @throws IOException if an I/O error occurs while writing to the file
      */
     public void save(List<Task> tasks) throws IOException {
+        // Assert that tasks list is not null and all tasks are valid
+        assert tasks != null : "Tasks list must not be null";
+        for (Task task : tasks) {
+            assert task != null : "All tasks must be non-null before saving";
+        }
+        
         Path path = Paths.get(filePath);
         File f = path.toFile();
 
