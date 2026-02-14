@@ -19,8 +19,8 @@ import bob.task.Task;
  * Manages saving tasks to disk and loading them back into memory.
  */
 public class Storage {
-    private String filePath;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private String filePath;
 
     /**
      * Constructs a Storage instance with the specified file path.
@@ -47,19 +47,25 @@ public class Storage {
         
         Path path = Paths.get(filePath);
         File f = path.toFile();
-        
+
         // Create parent directories if they don't exist
         if (f.getParentFile() != null && !f.getParentFile().exists()) {
             f.getParentFile().mkdirs();
         }
-        
+
         // Write tasks to file
         FileWriter fw = new FileWriter(f);
         try {
-            for (Task t : tasks) {
-                assert t.getDescription() != null : "Task description must not be null";
-                fw.write(t.toFileString() + System.lineSeparator());
-            }
+            tasks.stream()
+                    .peek(t -> assert t.getDescription() != null : "Task description must not be null")
+                    .map(t -> t.toFileString() + System.lineSeparator())
+                    .forEach(line -> {
+                        try {
+                            fw.write(line);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         } finally {
             fw.close();
         }
@@ -75,10 +81,10 @@ public class Storage {
      */
     public List<Task> load() throws IOException {
         List<Task> loadedTasks = new ArrayList<>();
-        
+
         Path path = Paths.get(filePath);
         File f = path.toFile();
-        
+
         // If file doesn't exist, return empty list
         if (!f.exists()) {
             return loadedTasks;
@@ -92,53 +98,54 @@ public class Storage {
                     if (line.trim().isEmpty()) {
                         continue;
                     }
-                    
+
                     String[] p = line.split(" \\| ");
-                    
+
                     // Validate minimum fields
                     if (p.length < 3) {
                         System.out.println("Warning: Skipping corrupted line (insufficient fields): " + line);
                         continue;
                     }
-                    
+
                     Task t;
                     try {
                         switch (p[0].trim()) {
-                            case "T":
-                                t = new bob.task.Todo(p[2]);
-                                break;
-                            case "D":
-                                if (p.length < 4) {
-                                    System.out.println("Warning: Skipping corrupted deadline (missing deadline): " + line);
-                                    continue;
-                                }
-                                try {
-                                    LocalDate deadlineDate = LocalDate.parse(p[3].trim(), DATE_FORMAT);
-                                    t = new bob.task.Deadline(p[2], deadlineDate);
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Warning: Skipping deadline with invalid date format: " + line);
-                                    continue;
-                                }
-                                break;
-                            case "E":
-                                if (p.length < 5) {
-                                    System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
-                                    continue;
-                                }
-                                try {
-                                    LocalDate eventFrom = LocalDate.parse(p[3].trim(), DATE_FORMAT);
-                                    LocalDate eventTo = LocalDate.parse(p[4].trim(), DATE_FORMAT);
-                                    t = new bob.task.Event(p[2], eventFrom, eventTo);
-                                } catch (DateTimeParseException e) {
-                                    System.out.println("Warning: Skipping event with invalid date format: " + line);
-                                    continue;
-                                }
-                                break;
-                            default:
-                                System.out.println("Warning: Skipping line with unknown task type: " + line);
+                        case "T":
+                            t = new bob.task.Todo(p[2]);
+                            break;
+                        case "D":
+                            if (p.length < 4) {
+                                System.out.println("Warning: Skipping corrupted deadline (missing deadline): "
+                                        + line);
                                 continue;
+                            }
+                            try {
+                                LocalDate deadlineDate = LocalDate.parse(p[3].trim(), DATE_FORMAT);
+                                t = new bob.task.Deadline(p[2], deadlineDate);
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Warning: Skipping deadline with invalid date format: " + line);
+                                continue;
+                            }
+                            break;
+                        case "E":
+                            if (p.length < 5) {
+                                System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
+                                continue;
+                            }
+                            try {
+                                LocalDate eventFrom = LocalDate.parse(p[3].trim(), DATE_FORMAT);
+                                LocalDate eventTo = LocalDate.parse(p[4].trim(), DATE_FORMAT);
+                                t = new bob.task.Event(p[2], eventFrom, eventTo);
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Warning: Skipping event with invalid date format: " + line);
+                                continue;
+                            }
+                            break;
+                        default:
+                            System.out.println("Warning: Skipping line with unknown task type: " + line);
+                            continue;
                         }
-                        
+
                         // Mark as done if status is 1
                         try {
                             if (p[1].trim().equals("1")) {
@@ -147,7 +154,7 @@ public class Storage {
                         } catch (Exception e) {
                             System.out.println("Warning: Invalid status field, treating as not done: " + line);
                         }
-                        
+
                         loadedTasks.add(t);
                     } catch (Exception e) {
                         System.out.println("Warning: Error parsing task, skipping line: " + line);
@@ -162,12 +169,13 @@ public class Storage {
             System.out.println("Warning: Error reading file, starting with empty list: " + e.getMessage());
             return loadedTasks;
         }
-        
+
         // Assert that the loaded tasks list is not null and contains only valid tasks
         assert loadedTasks != null : "Loaded tasks list should not be null";
         for (Task task : loadedTasks) {
             assert task != null : "All tasks in loaded list should be non-null";
         }
+
         return loadedTasks;
     }
 }

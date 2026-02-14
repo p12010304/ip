@@ -2,12 +2,15 @@ package bob.tasklist;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import bob.exception.BobException;
-import bob.task.Task;
 import bob.task.Deadline;
 import bob.task.Event;
+import bob.task.Task;
 
 /**
  * Manages a collection of tasks.
@@ -34,12 +37,12 @@ public class TaskList {
     }
 
     /**
-     * Adds a task to the list.
+     * Adds one or more tasks to the list.
      *
-     * @param task the task to add
+     * @param tasks the task(s) to add
      */
-    public void addTask(Task task) {
-        tasks.add(task);
+    public void addTask(Task... tasks) {
+        Arrays.stream(tasks).forEach(this.tasks::add);
     }
 
     /**
@@ -139,21 +142,18 @@ public class TaskList {
      * @return a list of tasks matching the date
      */
     public List<Task> findTasksByDate(LocalDate searchDate) {
-        List<Task> matchingTasks = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t instanceof Deadline) {
-                Deadline d = (Deadline) t;
-                if (d.getDate().equals(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            } else if (t instanceof Event) {
-                Event e = (Event) t;
-                if (!e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate)) {
-                    matchingTasks.add(t);
-                }
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> {
+                    if (t instanceof Deadline) {
+                        Deadline d = (Deadline) t;
+                        return d.getDate().equals(searchDate);
+                    } else if (t instanceof Event) {
+                        Event e = (Event) t;
+                        return !e.getFromDate().isAfter(searchDate) && !e.getToDate().isBefore(searchDate);
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -163,13 +163,17 @@ public class TaskList {
      * @return a list of tasks matching the keyword
      */
     public List<Task> findTasksByKeyword(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (Task t : tasks) {
-            if (t.getDescription().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(t);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(t -> t.getDescription().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Sorts tasks alphabetically by their description.
+     * The sort is case-insensitive.
+     */
+    public void sortTasks() {
+        tasks.sort(Comparator.comparing(task -> task.getDescription().toLowerCase()));
     }
 }

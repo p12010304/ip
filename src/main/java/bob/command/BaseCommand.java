@@ -1,14 +1,10 @@
 package bob.command;
 
 import bob.exception.BobException;
+import bob.storage.Storage;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
-import bob.storage.Storage;
 
-/**
- * Abstract base class for all commands in the Bob application.
- * Defines the contract that all command implementations must follow.
- */
 /**
  * Abstract base class for all commands in the Bob application.
  * Defines the contract that all command implementations must follow.

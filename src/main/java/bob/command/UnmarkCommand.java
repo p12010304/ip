@@ -4,46 +4,42 @@ import java.io.IOException;
 
 import bob.exception.BobException;
 import bob.parser.Parser;
+import bob.storage.Storage;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
-import bob.storage.Storage;
 
 /**
  * Command to mark a task as not done.
- * Parses the task index from input and updates the task's completion status.
- */
-/**
- * Command to mark a task as not done.
- * Parses the task index from input and updates the task's completion status.
+ * Parses the task index from user input and updates the task's completion status.
  */
 public class UnmarkCommand extends BaseCommand {
-    private String input;
+    private String userInput;
 
     /**
      * Constructs an UnmarkCommand with the user input.
-     * @param input the user input string containing the task index to mark as not done
+     * @param userInput the user input string containing the task index to mark as not done
      */
-    public UnmarkCommand(String input) {
-        this.input = input;
+    public UnmarkCommand(String userInput) {
+        this.userInput = userInput;
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        int idx = Parser.parseTaskIndex(input);
+        int idx = Parser.parseTaskIndex(userInput);
         tasks.unmarkTask(idx);
         ui.showTaskUnmarked(tasks.getTask(idx));
-        saveTask(storage, tasks, ui);
+        saveTasks(storage, tasks, ui);
     }
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        int idx = Parser.parseTaskIndex(input);
+        int idx = Parser.parseTaskIndex(userInput);
         tasks.unmarkTask(idx);
-        saveTaskQuiet(storage, tasks);
+        saveTasksQuiet(storage, tasks);
         return "OK, I've marked this task as not done yet:\n  " + tasks.getTask(idx).toString();
     }
 
-    private void saveTask(Storage storage, TaskList tasks, Ui ui) {
+    private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
@@ -51,7 +47,7 @@ public class UnmarkCommand extends BaseCommand {
         }
     }
 
-    private void saveTaskQuiet(Storage storage, TaskList tasks) throws BobException {
+    private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {

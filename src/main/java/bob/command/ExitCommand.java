@@ -1,9 +1,9 @@
 package bob.command;
 
 import bob.exception.BobException;
+import bob.storage.Storage;
 import bob.tasklist.TaskList;
 import bob.ui.Ui;
-import bob.storage.Storage;
 
 /**
  * Command to exit the Bob application.
@@ -15,11 +15,13 @@ public class ExitCommand extends BaseCommand {
         ui.showExit();
     }
 
-    @Override    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
+    @Override
+    public String executeForGui(TaskList tasks, Storage storage) throws BobException {
         return "Bye. Hope to see you again soon!";
     }
 
-    @Override    public boolean isExit() {
+    @Override
+    public boolean isExit() {
         return true;
     }
 }

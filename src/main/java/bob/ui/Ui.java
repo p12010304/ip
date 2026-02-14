@@ -1,7 +1,9 @@
 package bob.ui;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import bob.task.Task;
 
@@ -47,19 +49,19 @@ public class Ui {
     }
 
     /**
-     * Prints a message to the console followed by a newline.
-     * @param message the text to display
+     * Prints messages to the console, each followed by a newline.
+     * @param messages the text messages to display
      */
-    public void println(String message) {
-        System.out.println(message);
+    public void println(String... messages) {
+        Arrays.stream(messages).forEach(System.out::println);
     }
 
     /**
-     * Prints a message to the console without a newline.
-     * @param message the text to display
+     * Prints messages to the console without newlines.
+     * @param messages the text messages to display
      */
-    public void print(String message) {
-        System.out.print(message);
+    public void print(String... messages) {
+        Arrays.stream(messages).forEach(System.out::print);
     }
 
     /**
@@ -115,9 +117,8 @@ public class Ui {
             println(" Your task list is empty.");
         } else {
             println(" Here are the tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                println(" " + (i + 1) + "." + tasks.get(i));
-            }
+            IntStream.range(0, tasks.size())
+                    .forEach(i -> println(" " + (i + 1) + "." + tasks.get(i)));
         }
         showLine();
     }
@@ -204,10 +205,18 @@ public class Ui {
             println(" No matching tasks found for \"" + keyword + "\"");
         } else {
             println(" Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                println(" " + (i + 1) + "." + matchingTasks.get(i));
-            }
+            IntStream.range(0, matchingTasks.size())
+                    .forEach(i -> println(" " + (i + 1) + "." + matchingTasks.get(i)));
         }
+        showLine();
+    }
+
+    /**
+     * Displays a message indicating that tasks have been sorted.
+     */
+    public void showSortedMessage() {
+        showLine();
+        println(" Got it! I've sorted your tasks alphabetically.");
         showLine();
     }
 }
