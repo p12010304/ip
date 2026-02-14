@@ -57,6 +57,7 @@ public class Storage {
         FileWriter fw = new FileWriter(f);
         try {
             tasks.stream()
+                    .peek(t -> assert t.getDescription() != null : "Task description must not be null")
                     .map(t -> t.toFileString() + System.lineSeparator())
                     .forEach(line -> {
                         try {
@@ -167,6 +168,12 @@ public class Storage {
         } catch (IOException e) {
             System.out.println("Warning: Error reading file, starting with empty list: " + e.getMessage());
             return loadedTasks;
+        }
+
+        // Assert that the loaded tasks list is not null and contains only valid tasks
+        assert loadedTasks != null : "Loaded tasks list should not be null";
+        for (Task task : loadedTasks) {
+            assert task != null : "All tasks in loaded list should be non-null";
         }
 
         return loadedTasks;
