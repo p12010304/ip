@@ -28,6 +28,9 @@ public class Event extends Task {
         super(description);
         this.from = parseDate(from);
         this.to = parseDate(to);
+        if (this.from.isAfter(this.to)) {
+            throw new IllegalArgumentException("The 'from' date cannot be after the 'to' date!");
+        }
     }
 
     /**
@@ -36,11 +39,15 @@ public class Event extends Task {
      * @param description a brief description of the event
      * @param from the start date as a LocalDate
      * @param to the end date as a LocalDate
+     * @throws IllegalArgumentException if from date is after to date
      */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
+        if (this.from.isAfter(this.to)) {
+            throw new IllegalArgumentException("The 'from' date cannot be after the 'to' date!");
+        }
     }
 
     /**
@@ -54,7 +61,7 @@ public class Event extends Task {
         try {
             return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+            throw new IllegalArgumentException("Invalid date format! Please use yyyy-MM-dd (e.g., 2019-12-01)");
         }
     }
 

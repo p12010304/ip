@@ -44,7 +44,7 @@ public class UnmarkCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Error saving task: " + e.getMessage());
+            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class UnmarkCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Error saving task: " + e.getMessage());
+            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
         }
     }
 }

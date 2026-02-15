@@ -26,7 +26,7 @@ public class FindCommand extends BaseCommand {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
         String keyword = userInput.substring(4).trim();
         if (keyword.isEmpty()) {
-            throw new BobException("Please provide a keyword to search for.");
+            throw new BobException("Please provide a keyword to search for! (e.g., find book)");
         }
         List<bob.task.Task> matchingTasks = tasks.findTasksByKeyword(keyword);
         ui.showTasksFound(matchingTasks, keyword);
@@ -36,7 +36,7 @@ public class FindCommand extends BaseCommand {
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
         String keyword = userInput.substring(4).trim();
         if (keyword.isEmpty()) {
-            throw new BobException("Please provide a keyword to search for.");
+            throw new BobException("Please provide a keyword to search for! (e.g., find book)");
         }
         List<bob.task.Task> matchingTasks = tasks.findTasksByKeyword(keyword);
         if (matchingTasks.isEmpty()) {

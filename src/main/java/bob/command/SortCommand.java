@@ -20,7 +20,7 @@ public class SortCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Error saving sorted tasks: " + e.getMessage());
+            throw new BobException("Oops! Couldn't save your sorted tasks: " + e.getMessage());
         }
     }
 
@@ -30,7 +30,7 @@ public class SortCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Error saving sorted tasks: " + e.getMessage());
+            throw new BobException("Oops! Couldn't save your sorted tasks: " + e.getMessage());
         }
         if (tasks.getSize() == 0) {
             return "🤷 You have no tasks to sort yet!\nAdd some first? 😊";
