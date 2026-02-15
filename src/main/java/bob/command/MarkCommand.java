@@ -36,7 +36,8 @@ public class MarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.markTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "Nice! I've marked this task as done:\n  " + tasks.getTask(idx).toString();
+        return "🎉 Awesome job! One down! Marked as complete:\n  " + tasks.getTask(idx).toString()
+                + "\nKeep up the great work! ⭐";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {

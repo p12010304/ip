@@ -36,8 +36,8 @@ public class DeleteCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         bob.task.Task removedTask = tasks.deleteTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "Noted. I've removed this task:\n  " + removedTask.toString()
-                + "\nNow you have " + tasks.getSize() + " tasks in the list.";
+        return "🗑️ Poof! Removed this task:\n  " + removedTask.toString()
+                + "\n📋 " + tasks.getSize() + " task(s) left. You're making progress! 🚀";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
