@@ -22,7 +22,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setTitle("Bob");
+            stage.setTitle("Bob - Your Task Manager");
+            stage.setMinWidth(450);
+            stage.setMinHeight(600);
             fxmlLoader.<MainWindow>getController().setBob(bob);
             stage.show();
         } catch (IOException e) {
