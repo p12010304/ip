@@ -1,0 +1,122 @@
+/* Main Application Styling */
+.root {
+    -fx-background-color: #f5f7fa;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Scroll Pane */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: #f5f7fa;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e0;
+    -fx-background-radius: 5px;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a0aec0;
+}
+
+/* Text Input Field */
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 20px;
+    -fx-border-width: 2px;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2d3748;
+    -fx-prompt-text-fill: #a0aec0;
+}
+
+.text-field:focused {
+    -fx-border-color: #4299e1;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(66, 153, 225, 0.3), 10, 0, 0, 0);
+}
+
+/* Send Button */
+.button {
+    -fx-background-color: #4299e1;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #3182ce;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 3);
+}
+
+.button:pressed {
+    -fx-background-color: #2c5282;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 3, 0, 0, 1);
+}
+
+/* Dialog Container */
+#dialogContainer {
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 10px;
+    -fx-spacing: 12px;
+}
+
+/* User Dialog Box */
+.user-dialog {
+    -fx-background-color: #4299e1;
+    -fx-background-radius: 15px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.user-dialog .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 2px;
+}
+
+/* Bob Dialog Box */
+.bob-dialog {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 5, 0, 0, 2);
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 15px;
+    -fx-border-width: 1px;
+}
+
+.bob-dialog .label {
+    -fx-text-fill: #2d3748;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 2px;
+}
+
+/* Avatar Images */
+.avatar {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 2);
+}
+
+/* Input Container */
+.input-container {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, -2);
+}

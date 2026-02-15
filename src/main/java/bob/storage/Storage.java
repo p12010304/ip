@@ -57,7 +57,6 @@ public class Storage {
         FileWriter fw = new FileWriter(f);
         try {
             tasks.stream()
-                    .peek(t -> assert t.getDescription() != null : "Task description must not be null")
                     .map(t -> t.toFileString() + System.lineSeparator())
                     .forEach(line -> {
                         try {
