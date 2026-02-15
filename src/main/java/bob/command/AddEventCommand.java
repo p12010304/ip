@@ -37,8 +37,8 @@ public class AddEventCommand extends BaseCommand {
         Task task = Parser.parseAddEvent(userInput);
         tasks.addTask(task);
         saveTasksQuiet(storage, tasks);
-        return "Got it. I've added this task:\n  " + task.toString()
-                + "\nNow you have " + tasks.getSize() + " tasks in the list.";
+        return "✨ Perfect! Added this to your list:\n  " + task.toString()
+                + "\n📊 You now have " + tasks.getSize() + " task(s). Let's crush them! 💪";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {

@@ -36,7 +36,8 @@ public class UnmarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.unmarkTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "OK, I've marked this task as not done yet:\n  " + tasks.getTask(idx).toString();
+        return "🔄 No problem! Unmarked this one:\n  " + tasks.getTask(idx).toString()
+                + "\nYou've got this! 💪";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
