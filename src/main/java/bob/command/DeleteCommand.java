@@ -36,10 +36,17 @@ public class DeleteCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         bob.task.Task removedTask = tasks.deleteTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "Removed:\n  " + removedTask.toString()
-                + "\nNow you have " + tasks.getSize() + " task(s) in the list.";
+        return "Noted. Removed this task:\n  " + removedTask.toString()
+                + "\nYou now have " + tasks.getSize() + " task(s) in the list.";
     }
 
+    /**
+     * Saves the task list to storage and displays an error message if the save fails.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @param ui the user interface for displaying error messages
+     */
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
@@ -48,6 +55,14 @@ public class DeleteCommand extends BaseCommand {
         }
     }
 
+    /**
+     * Saves the task list to storage and throws an exception if the save fails.
+     * Used by GUI mode to propagate errors.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @throws BobException if an I/O error occurs during save
+     */
     private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());

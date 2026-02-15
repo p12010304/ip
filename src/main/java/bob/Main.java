@@ -15,6 +15,11 @@ public class Main extends Application {
 
     private Bob bob = new Bob();
 
+    /**
+     * Starts the JavaFX application by loading the main window and setting up the stage.
+     *
+     * @param stage the primary stage for this application
+     */
     @Override
     public void start(Stage stage) {
         try {

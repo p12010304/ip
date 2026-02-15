@@ -37,10 +37,17 @@ public class AddTodoCommand extends BaseCommand {
         Task task = Parser.parseAddTodo(userInput);
         tasks.addTask(task);
         saveTasksQuiet(storage, tasks);
-        return "Added:\n  " + task.toString()
-                + "\nNow you have " + tasks.getSize() + " task(s) in the list.";
+        return "Got it! Added this task:\n  " + task.toString()
+                + "\nYou now have " + tasks.getSize() + " task(s) in the list.";
     }
 
+    /**
+     * Saves the task list to storage and displays an error message if the save fails.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @param ui the user interface for displaying error messages
+     */
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
@@ -49,6 +56,14 @@ public class AddTodoCommand extends BaseCommand {
         }
     }
 
+    /**
+     * Saves the task list to storage and throws an exception if the save fails.
+     * Used by GUI mode to propagate errors.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @throws BobException if an I/O error occurs during save
+     */
     private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());

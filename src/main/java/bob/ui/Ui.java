@@ -8,32 +8,31 @@ import java.util.stream.IntStream;
 import bob.task.Task;
 
 /**
- * Handles user interface operations for the Bob application.
- * Displays messages to the user and reads command input from the console.
+ * User interface for the Bob application.
  */
 public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
     private Scanner scanner;
 
     /**
-     * Constructs a new Ui instance with a Scanner for reading user input.
+     * Constructs a new Ui instance.
      */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
     /**
-     * Displays the welcome message when the application starts.
+     * Displays the welcome message.
      */
     public void showWelcome() {
         showLine();
-        println(" Hello! I'm Bob, your task manager.");
-        println(" What can I do for you?");
+        println(" Hello! I'm Bob, your personal task manager.");
+        println(" What would you like to do today?");
         showLine();
     }
 
     /**
-     * Displays the exit message when the user quits the application.
+     * Displays the exit message.
      */
     public void showExit() {
         showLine();
@@ -42,64 +41,61 @@ public class Ui {
     }
 
     /**
-     * Displays a dividing line to separate output sections.
+     * Displays a dividing line.
      */
     public void showLine() {
         System.out.println(DIVIDER);
     }
 
     /**
-     * Prints messages to the console, each followed by a newline.
-     * @param messages the text messages to display
+     * Prints messages to the console.
+     * @param messages the messages to display
      */
     public void println(String... messages) {
         Arrays.stream(messages).forEach(System.out::println);
     }
 
     /**
-     * Prints messages to the console without newlines.
-     * @param messages the text messages to display
+     * Prints messages without newlines.
+     * @param messages the messages to display
      */
     public void print(String... messages) {
         Arrays.stream(messages).forEach(System.out::print);
     }
 
     /**
-     * Reads the next command input from the user.
-     * @return the command string entered by the user
+     * Reads the next command from the user.
+     * @return the command string
      */
     public String readCommand() {
         return scanner.nextLine();
     }
 
     /**
-     * Displays an error message indicating a failure to load the task list from storage.
-     * Informs the user that the application will start with an empty list.
+     * Displays an error when tasks cannot be loaded.
      */
     public void showLoadingError() {
         showLine();
-        println(" Unable to load saved tasks.");
-        println(" Starting with a new task list.");
+        println(" Couldn't load your saved tasks.");
+        println(" No worries, starting fresh!");
         showLine();
     }
 
     /**
-     * Displays a message indicating the number of tasks successfully loaded from storage.
-     * If the count is 0, informs the user that they are starting with a fresh list.
+     * Displays the number of tasks loaded.
      * @param count the number of tasks loaded
      */
     public void showLoadingSuccess(int count) {
         if (count == 0) {
-            println(" No saved tasks found. Starting with a fresh list.");
+            println(" Starting fresh, no tasks yet!");
         } else {
-            println(" Successfully loaded " + count + " task(s).");
+            println(" Loaded " + count + " task(s) from last time.");
         }
     }
 
     /**
-     * Displays an error message to the user.
-     * Formats the message with dividing lines.
-     * @param message the error description to display
+     * Displays an error message.
+     * @param message the error message
      */
     public void showError(String message) {
         showLine();
@@ -108,14 +104,13 @@ public class Ui {
     }
 
     /**
-     * Displays the user's task list.
-     * Shows a message if the list is empty, or displays all tasks with numbering.
-     * @param tasks the list of tasks to display
+     * Displays the task list.
+     * @param tasks the list of tasks
      */
     public void showTaskList(List<Task> tasks) {
         showLine();
         if (tasks.isEmpty()) {
-            println(" Your task list is empty.");
+            println(" Your task list is empty! Time to add some tasks.");
         } else {
             println(" Here are your tasks:");
             IntStream.range(0, tasks.size())
@@ -125,61 +120,57 @@ public class Ui {
     }
 
     /**
-     * Displays a confirmation message that a task has been added to the list.
-     * Shows the task details and the new total number of tasks.
-     * @param task the task that was added
-     * @param totalTasks the total number of tasks after adding
+     * Displays confirmation that a task has been added.
+     * @param task the task added
+     * @param totalTasks the total number of tasks
      */
     public void showTaskAdded(Task task, int totalTasks) {
         showLine();
-        println(" Added:");
+        println(" Got it! Added this task:");
         println("   " + task);
-        println(" Now you have " + totalTasks + " task(s) in the list.");
+        println(" You now have " + totalTasks + " task(s) in your list.");
         showLine();
     }
 
     /**
-     * Displays a confirmation message that a task has been marked as done.
-     * @param task the task that was marked as done
+     * Displays confirmation that a task is marked as done.
+     * @param task the task marked
      */
     public void showTaskMarked(Task task) {
         showLine();
-        println(" Marked as done:");
+        println(" Nice! Marked this task as done:");
         println("   " + task);
         showLine();
     }
 
     /**
-     * Displays a confirmation message that a task has been marked as not done.
-     * @param task the task that was marked as not done
+     * Displays confirmation that a task is marked as not done.
+     * @param task the task unmarked
      */
     public void showTaskUnmarked(Task task) {
         showLine();
-        println(" Marked as not done:");
+        println(" Okay, marked this as not done:");
         println("   " + task);
         showLine();
     }
 
     /**
-     * Displays a confirmation message that a task has been deleted.
-     * Shows the deleted task details and the new total number of remaining tasks.
-     * @param task the task that was deleted
-     * @param remainingTasks the number of tasks remaining after deletion
+     * Displays confirmation that a task has been deleted.
+     * @param task the task deleted
+     * @param remainingTasks the number of tasks remaining
      */
     public void showTaskDeleted(Task task, int remainingTasks) {
         showLine();
-        println(" Removed:");
+        println(" Noted. Removed this task:");
         println("   " + task);
         println(" Now you have " + remainingTasks + " task(s) in the list.");
         showLine();
     }
 
     /**
-     * Displays tasks that match a specified date or date range.
-     * Shows a message if no tasks are found, or displays matching tasks with numbering.
-     * For Deadline tasks, exact date match is required. For Event tasks, date must fall within the event range.
-     * @param matchingTasks the list of tasks found for the specified date
-     * @param dateStr the date string in the format yyyy-MM-dd
+     * Displays tasks on a specific date.
+     * @param matchingTasks the tasks found
+     * @param dateStr the date
      */
     public void showTasksOnDate(List<Task> matchingTasks, String dateStr) {
         showLine();
@@ -195,17 +186,16 @@ public class Ui {
     }
 
     /**
-     * Displays tasks that match a keyword search.
-     *
-     * @param matchingTasks the list of tasks matching the keyword
-     * @param keyword the search keyword
+     * Displays tasks matching a keyword.
+     * @param matchingTasks the matching tasks
+     * @param keyword the keyword
      */
     public void showTasksFound(List<Task> matchingTasks, String keyword) {
         showLine();
         if (matchingTasks.isEmpty()) {
-            println(" No tasks found matching \"" + keyword + "\".");
+            println(" No tasks found with \"" + keyword + "\".");
         } else {
-            println(" Matching tasks:");
+            println(" Here are the matching tasks:");
             IntStream.range(0, matchingTasks.size())
                     .forEach(i -> println(" " + (i + 1) + "." + matchingTasks.get(i)));
         }
@@ -213,11 +203,11 @@ public class Ui {
     }
 
     /**
-     * Displays a message indicating that tasks have been sorted.
+     * Displays message that tasks have been sorted.
      */
     public void showSortedMessage() {
         showLine();
-        println(" Tasks sorted alphabetically.");
+        println(" Done! Your tasks are now sorted alphabetically.");
         showLine();
     }
 }

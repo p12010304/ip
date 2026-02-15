@@ -33,9 +33,9 @@ public class SortCommand extends BaseCommand {
             throw new BobException("Could not save your sorted tasks: " + e.getMessage());
         }
         if (tasks.getSize() == 0) {
-            return "You have no tasks to sort yet.";
+            return "You have no tasks to sort yet!";
         }
-        StringBuilder sb = new StringBuilder("Tasks sorted alphabetically:\n");
+        StringBuilder sb = new StringBuilder("Done! Tasks sorted alphabetically:\n");
         for (int i = 0; i < tasks.getSize(); i++) {
             sb.append((i + 1)).append(".").append(tasks.getTask(i).toString()).append("\n");
         }

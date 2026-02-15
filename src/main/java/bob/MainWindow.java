@@ -32,14 +32,18 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-        String welcomeMessage = "Hello! I'm Bob, your task manager.\n\n"
-                + "What can I do for you?";
+        String welcomeMessage = "Hello! I'm Bob, your personal task manager.\n\n"
+                + "What would you like to do today?";
         dialogContainer.getChildren().add(
                 DialogBox.getBobDialog(welcomeMessage, bobImage)
         );
     }
 
-    /** Injects the Bob instance */
+    /**
+     * Sets the Bob instance to be used for processing commands.
+     *
+     * @param bob the Bob application instance
+     */
     public void setBob(Bob bob) {
         this.bob = bob;
     }

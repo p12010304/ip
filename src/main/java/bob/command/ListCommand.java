@@ -18,7 +18,7 @@ public class ListCommand extends BaseCommand {
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
         if (tasks.getSize() == 0) {
-            return "Your task list is empty.";
+            return "Your task list is empty! Time to add some tasks.";
         }
         StringBuilder sb = new StringBuilder("Here are your tasks:\n");
         for (int i = 0; i < tasks.getSize(); i++) {

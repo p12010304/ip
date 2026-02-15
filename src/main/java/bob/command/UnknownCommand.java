@@ -12,13 +12,13 @@ import bob.ui.Ui;
 public class UnknownCommand extends BaseCommand {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws BobException {
-        throw new BobException("Unknown command.\n"
-                + "Available commands: list, todo, deadline, event, mark, unmark, delete, find, sort, bye");
+        throw new BobException("I don't understand that command.\n"
+                + "Try: list, todo, deadline, event, mark, unmark, delete, find, sort, bye");
     }
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        throw new BobException("Unknown command.\n"
-                + "Available commands: list, todo, deadline, event, mark, unmark, delete, find, sort, bye");
+        throw new BobException("I don't understand that command.\n"
+                + "Try: list, todo, deadline, event, mark, unmark, delete, find, sort, bye");
     }
 }

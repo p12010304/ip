@@ -36,10 +36,15 @@ public class UnmarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.unmarkTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "Marked as not done:\n  " + tasks.getTask(idx).toString();
+        return "Okay, marked this as not done:\n  " + tasks.getTask(idx).toString();
     }
-
-    private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
+    /**
+     * Saves the task list to storage and displays an error message if the save fails.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @param ui the user interface for displaying error messages
+     */    private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
@@ -47,6 +52,14 @@ public class UnmarkCommand extends BaseCommand {
         }
     }
 
+    /**
+     * Saves the task list to storage and throws an exception if the save fails.
+     * Used by GUI mode to propagate errors.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @throws BobException if an I/O error occurs during save
+     */
     private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());

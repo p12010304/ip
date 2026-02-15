@@ -13,8 +13,7 @@ import bob.task.Event;
 import bob.task.Task;
 
 /**
- * Manages a collection of tasks.
- * Handles task operations such as adding, deleting, marking, and searching tasks.
+ * Collection of tasks.
  */
 public class TaskList {
     private List<Task> tasks;
@@ -27,8 +26,7 @@ public class TaskList {
     }
 
     /**
-     * Constructs a TaskList initialized with the given list of tasks.
-     * Creates a copy of the input list to prevent external modifications.
+     * Constructs a TaskList with the given tasks.
      *
      * @param tasks the initial list of tasks
      */
@@ -37,7 +35,7 @@ public class TaskList {
     }
 
     /**
-     * Adds one or more tasks to the list.
+     * Adds tasks to the list.
      *
      * @param tasks the task(s) to add
      */
@@ -48,9 +46,9 @@ public class TaskList {
     /**
      * Deletes a task at the specified index.
      *
-     * @param index the 0-based index of the task to delete
+     * @param index the index of the task to delete
      * @return the deleted task
-     * @throws BobException if the index is out of bounds
+     * @throws BobException if index is invalid
      */
     public Task deleteTask(int index) throws BobException {
         if (index < 0 || index >= tasks.size()) {
@@ -64,11 +62,11 @@ public class TaskList {
     }
 
     /**
-     * Retrieves a task at the specified index.
+     * Gets a task at the specified index.
      *
-     * @param index the 0-based index of the task
-     * @return the task at the specified index
-     * @throws BobException if the index is out of bounds
+     * @param index the index of the task
+     * @return the task
+     * @throws BobException if index is invalid
      */
     public Task getTask(int index) throws BobException {
         if (index < 0 || index >= tasks.size()) {
@@ -84,8 +82,8 @@ public class TaskList {
     /**
      * Marks a task as done.
      *
-     * @param index the 0-based index of the task
-     * @throws BobException if the index is out of bounds
+     * @param index the index of the task
+     * @throws BobException if index is invalid
      */
     public void markTask(int index) throws BobException {
         Task task = getTask(index);
@@ -97,8 +95,8 @@ public class TaskList {
     /**
      * Marks a task as not done.
      *
-     * @param index the 0-based index of the task
-     * @throws BobException if the index is out of bounds
+     * @param index the index of the task
+     * @throws BobException if index is invalid
      */
     public void unmarkTask(int index) throws BobException {
         Task task = getTask(index);
@@ -108,7 +106,7 @@ public class TaskList {
     }
 
     /**
-     * Gets a copy of all tasks in the list.
+     * Gets a copy of all tasks.
      *
      * @return a copy of the task list
      */
@@ -117,7 +115,7 @@ public class TaskList {
     }
 
     /**
-     * Gets the number of tasks in the list.
+     * Gets the number of tasks.
      *
      * @return the number of tasks
      */
@@ -126,9 +124,9 @@ public class TaskList {
     }
 
     /**
-     * Checks if the task list is empty.
+     * Checks if the list is empty.
      *
-     * @return true if the list contains no tasks, false otherwise
+     * @return true if empty
      */
     public boolean isEmpty() {
         return tasks.isEmpty();
@@ -136,12 +134,9 @@ public class TaskList {
 
     /**
      * Finds tasks matching the specified date.
-     * For Deadline tasks, matches tasks with the exact deadline date.
-     * For Event tasks, matches tasks whose date range includes the specified date.
-     * Todo tasks are not included in the results.
      *
      * @param searchDate the date to search for
-     * @return a list of tasks matching the date
+     * @return matching tasks
      */
     public List<Task> findTasksByDate(LocalDate searchDate) {
         return tasks.stream()
@@ -159,10 +154,10 @@ public class TaskList {
     }
 
     /**
-     * Finds all tasks that contain the given keyword in their description.
+     * Finds tasks containing the keyword.
      *
      * @param keyword the keyword to search for
-     * @return a list of tasks matching the keyword
+     * @return matching tasks
      */
     public List<Task> findTasksByKeyword(String keyword) {
         String lowerKeyword = keyword.toLowerCase();
@@ -172,8 +167,7 @@ public class TaskList {
     }
 
     /**
-     * Sorts tasks alphabetically by their description.
-     * The sort is case-insensitive.
+     * Sorts tasks alphabetically.
      */
     public void sortTasks() {
         tasks.sort(Comparator.comparing(task -> task.getDescription().toLowerCase()));
