@@ -38,7 +38,7 @@ public class Parser {
      */
     public static BaseCommand parseCommand(String input) throws BobException {
         if (input.trim().isEmpty()) {
-            throw new BobException("Command cannot be empty.");
+            throw new BobException("Oops! You didn't type anything. Please enter a command!");
         }
 
         String firstWord = input.split(" ")[0].toUpperCase();
@@ -85,9 +85,12 @@ public class Parser {
      */
     public static Task parseAddTodo(String input) throws BobException {
         if (input.trim().length() <= 4) {
-            throw new BobException("The description of a todo cannot be empty.");
+            throw new BobException("Oops! The description of a todo cannot be empty. What needs to be done?");
         }
         String description = input.substring(5).trim();
+        if (description.isEmpty()) {
+            throw new BobException("Oops! The description of a todo cannot be empty. What needs to be done?");
+        }
         return new Todo(description);
     }
 
@@ -100,11 +103,11 @@ public class Parser {
      */
     public static Task parseAddDeadline(String input) throws BobException {
         if (!input.contains(" /by ")) {
-            throw new BobException("A deadline must have a /by part.");
+            throw new BobException("A deadline must have a /by part! Try: deadline <description> /by <yyyy-MM-dd>");
         }
         String[] parts = input.substring(9).split(" /by ");
-        if (parts.length < 2 || parts[0].trim().isEmpty()) {
-            throw new BobException("The description or date of a deadline cannot be empty.");
+        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new BobException("The description and date of a deadline cannot be empty!");
         }
         try {
             return new Deadline(parts[0].trim(), parts[1].trim());
@@ -122,11 +125,13 @@ public class Parser {
      */
     public static Task parseAddEvent(String input) throws BobException {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            throw new BobException("An event must have /from and /to parts.");
+            throw new BobException("An event must have both /from and /to parts! "
+                    + "Try: event <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>");
         }
         String[] parts = input.substring(6).split(" /from | /to ");
-        if (parts.length < 3 || parts[0].trim().isEmpty()) {
-            throw new BobException("The description, from, or to of an event cannot be empty.");
+        if (parts.length < 3 || parts[0].trim().isEmpty() 
+                || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+            throw new BobException("The description, from date, and to date cannot be empty!");
         }
         try {
             return new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
@@ -146,16 +151,19 @@ public class Parser {
     public static int parseTaskIndex(String input) throws BobException {
         String[] parts = input.split(" ");
         if (parts.length < 2) {
-            throw new BobException("Please specify a task number.");
+            throw new BobException("Please specify a task number! (e.g., mark 1)");
         }
         try {
             int taskNumber = Integer.parseInt(parts[1]);
+            if (taskNumber <= 0) {
+                throw new BobException("Task numbers must be positive! Try a number like 1, 2, 3...");
+            }
             int zeroBasedIndex = taskNumber - 1;
             // Assert that conversion from 1-based to 0-based indexing is correct
             assert zeroBasedIndex == taskNumber - 1 : "Index conversion must be correct";
             return zeroBasedIndex;
         } catch (NumberFormatException e) {
-            throw new BobException("Please provide a valid task number.");
+            throw new BobException("That doesn't look like a valid number! Please use digits (e.g., 1, 2, 3).");
         }
     }
 
@@ -172,7 +180,7 @@ public class Parser {
         try {
             return LocalDate.parse(dateStr.trim(), dateFormat);
         } catch (DateTimeParseException e) {
-            throw new BobException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+            throw new BobException("Invalid date format! Please use yyyy-MM-dd (e.g., 2019-12-01)");
         }
     }
 }

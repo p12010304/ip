@@ -49,7 +49,7 @@ public class Deadline extends Task {
         try {
             return LocalDate.parse(dateStr.trim(), INPUT_FORMAT);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-12-01)");
+            throw new IllegalArgumentException("Invalid date format! Please use yyyy-MM-dd (e.g., 2019-12-01)");
         }
     }
 
