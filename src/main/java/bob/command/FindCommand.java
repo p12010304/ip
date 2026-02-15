@@ -40,9 +40,9 @@ public class FindCommand extends BaseCommand {
         }
         List<bob.task.Task> matchingTasks = tasks.findTasksByKeyword(keyword);
         if (matchingTasks.isEmpty()) {
-            return "🔍 Couldn't find anything matching \"" + keyword + "\"!\nTry another search term? 🤔";
+            return "No tasks found matching \"" + keyword + "\".";
         }
-        StringBuilder sb = new StringBuilder("🔍 Found them! Here are your matching tasks:\n");
+        StringBuilder sb = new StringBuilder("Matching tasks:\n");
         for (int i = 0; i < matchingTasks.size(); i++) {
             sb.append((i + 1)).append(".").append(matchingTasks.get(i).toString()).append("\n");
         }

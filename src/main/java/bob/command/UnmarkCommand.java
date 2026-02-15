@@ -36,15 +36,14 @@ public class UnmarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.unmarkTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "🔄 No problem! Unmarked this one:\n  " + tasks.getTask(idx).toString()
-                + "\nYou've got this! 💪";
+        return "Marked as not done:\n  " + tasks.getTask(idx).toString();
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
+            ui.showError("Could not save your task: " + e.getMessage());
         }
     }
 
@@ -52,7 +51,7 @@ public class UnmarkCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
+            throw new BobException("Could not save your task: " + e.getMessage());
         }
     }
 }

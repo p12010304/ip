@@ -54,7 +54,7 @@ public class TaskList {
      */
     public Task deleteTask(int index) throws BobException {
         if (index < 0 || index >= tasks.size()) {
-            throw new BobException("Oops! That task number doesn't exist in your list. "
+            throw new BobException("That task number doesn't exist in your list. "
                     + "You have " + tasks.size() + " task(s).");
         }
         assert index >= 0 && index < tasks.size() : "Index must be valid before deletion";
@@ -72,7 +72,7 @@ public class TaskList {
      */
     public Task getTask(int index) throws BobException {
         if (index < 0 || index >= tasks.size()) {
-            throw new BobException("Oops! That task number doesn't exist in your list. "
+            throw new BobException("That task number doesn't exist in your list. "
                     + "You have " + tasks.size() + " task(s).");
         }
         assert index >= 0 && index < tasks.size() : "Index must be valid";

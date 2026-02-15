@@ -36,15 +36,15 @@ public class DeleteCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         bob.task.Task removedTask = tasks.deleteTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "🗑️ Poof! Removed this task:\n  " + removedTask.toString()
-                + "\n📋 " + tasks.getSize() + " task(s) left. You're making progress! 🚀";
+        return "Removed:\n  " + removedTask.toString()
+                + "\nNow you have " + tasks.getSize() + " task(s) in the list.";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
+            ui.showError("Could not save your task: " + e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class DeleteCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
+            throw new BobException("Could not save your task: " + e.getMessage());
         }
     }
 }

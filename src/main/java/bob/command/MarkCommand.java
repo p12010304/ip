@@ -36,15 +36,14 @@ public class MarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.markTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "🎉 Awesome job! One down! Marked as complete:\n  " + tasks.getTask(idx).toString()
-                + "\nKeep up the great work! ⭐";
+        return "Marked as done:\n  " + tasks.getTask(idx).toString();
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
+            ui.showError("Could not save your task: " + e.getMessage());
         }
     }
 
@@ -52,7 +51,7 @@ public class MarkCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
+            throw new BobException("Could not save your task: " + e.getMessage());
         }
     }
 }

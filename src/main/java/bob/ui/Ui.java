@@ -27,8 +27,8 @@ public class Ui {
      */
     public void showWelcome() {
         showLine();
-        println(" Hey there! 👋 I'm Bob, your friendly task manager!");
-        println(" Ready to tackle your to-do list together? Let's get organized! 📋✨");
+        println(" Hello! I'm Bob, your task manager.");
+        println(" What can I do for you?");
         showLine();
     }
 
@@ -37,8 +37,7 @@ public class Ui {
      */
     public void showExit() {
         showLine();
-        println(" Aww, leaving already? 😢");
-        println(" Keep crushing those tasks! See you soon! 🚀✨");
+        println(" Goodbye! Hope to see you again soon.");
         showLine();
     }
 
@@ -79,8 +78,8 @@ public class Ui {
      */
     public void showLoadingError() {
         showLine();
-        println(" Oops! 😅 Couldn't find your old tasks.");
-        println(" No worries though! Let's start fresh with a clean slate! 🎨");
+        println(" Unable to load saved tasks.");
+        println(" Starting with a new task list.");
         showLine();
     }
 
@@ -91,20 +90,20 @@ public class Ui {
      */
     public void showLoadingSuccess(int count) {
         if (count == 0) {
-            println(" 🌟 Fresh start! No tasks yet. Let's add some!");
+            println(" No saved tasks found. Starting with a fresh list.");
         } else {
-            println(" ✅ Awesome! Loaded " + count + " task(s) from last time!");
+            println(" Successfully loaded " + count + " task(s).");
         }
     }
 
     /**
      * Displays an error message to the user.
-     * Formats the message with a friendly prefix and dividing lines.
+     * Formats the message with dividing lines.
      * @param message the error description to display
      */
     public void showError(String message) {
         showLine();
-        println(" Whoops! 🤔 " + message);
+        println(" Error: " + message);
         showLine();
     }
 
@@ -116,10 +115,9 @@ public class Ui {
     public void showTaskList(List<Task> tasks) {
         showLine();
         if (tasks.isEmpty()) {
-            println(" 🎉 Woohoo! Your task list is empty!");
-            println(" Time to relax or add some new goals! 😎");
+            println(" Your task list is empty.");
         } else {
-            println(" 📝 Here's what's on your plate:");
+            println(" Here are your tasks:");
             IntStream.range(0, tasks.size())
                     .forEach(i -> println(" " + (i + 1) + "." + tasks.get(i)));
         }
@@ -134,9 +132,9 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int totalTasks) {
         showLine();
-        println(" ✨ Perfect! Added this to your list:");
+        println(" Added:");
         println("   " + task);
-        println(" 📊 You now have " + totalTasks + " task(s). Let's crush them! 💪");
+        println(" Now you have " + totalTasks + " task(s) in the list.");
         showLine();
     }
 
@@ -146,9 +144,8 @@ public class Ui {
      */
     public void showTaskMarked(Task task) {
         showLine();
-        println(" 🎉 Awesome job! One down! Marked as complete:");
+        println(" Marked as done:");
         println("   " + task);
-        println(" Keep up the great work! ⭐");
         showLine();
     }
 
@@ -158,9 +155,8 @@ public class Ui {
      */
     public void showTaskUnmarked(Task task) {
         showLine();
-        println(" 🔄 No problem! Unmarked this one:");
+        println(" Marked as not done:");
         println("   " + task);
-        println(" You've got this! 💪");
         showLine();
     }
 
@@ -172,9 +168,9 @@ public class Ui {
      */
     public void showTaskDeleted(Task task, int remainingTasks) {
         showLine();
-        println(" 🗑️ Poof! Removed this task:");
+        println(" Removed:");
         println("   " + task);
-        println(" 📋 " + remainingTasks + " task(s) left. You're making progress! 🚀");
+        println(" Now you have " + remainingTasks + " task(s) in the list.");
         showLine();
     }
 
@@ -188,10 +184,9 @@ public class Ui {
     public void showTasksOnDate(List<Task> matchingTasks, String dateStr) {
         showLine();
         if (matchingTasks.isEmpty()) {
-            println(" 📅 Hmm, nothing scheduled for " + dateStr + "!");
-            println(" Looks like a free day! 😊");
+            println(" No tasks found for " + dateStr + ".");
         } else {
-            println(" 📅 Here's what's happening around " + dateStr + ":");
+            println(" Tasks on " + dateStr + ":");
             for (int i = 0; i < matchingTasks.size(); i++) {
                 println(" " + (i + 1) + "." + matchingTasks.get(i));
             }
@@ -208,10 +203,9 @@ public class Ui {
     public void showTasksFound(List<Task> matchingTasks, String keyword) {
         showLine();
         if (matchingTasks.isEmpty()) {
-            println(" 🔍 Couldn't find anything matching \"" + keyword + "\"!");
-            println(" Try another search term? 🤔");
+            println(" No tasks found matching \"" + keyword + "\".");
         } else {
-            println(" 🔍 Found them! Here are your matching tasks:");
+            println(" Matching tasks:");
             IntStream.range(0, matchingTasks.size())
                     .forEach(i -> println(" " + (i + 1) + "." + matchingTasks.get(i)));
         }
@@ -223,8 +217,7 @@ public class Ui {
      */
     public void showSortedMessage() {
         showLine();
-        println(" 🎯 Done! Your tasks are now sorted alphabetically.");
-        println(" Much more organized now! 📚✨");
+        println(" Tasks sorted alphabetically.");
         showLine();
     }
 }

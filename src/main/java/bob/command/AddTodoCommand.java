@@ -37,15 +37,15 @@ public class AddTodoCommand extends BaseCommand {
         Task task = Parser.parseAddTodo(userInput);
         tasks.addTask(task);
         saveTasksQuiet(storage, tasks);
-        return "✨ Perfect! Added this to your list:\n  " + task.toString()
-                + "\n📊 You now have " + tasks.getSize() + " task(s). Let's crush them! 💪";
+        return "Added:\n  " + task.toString()
+                + "\nNow you have " + tasks.getSize() + " task(s) in the list.";
     }
 
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
+            ui.showError("Could not save your task: " + e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class AddTodoCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
+            throw new BobException("Could not save your task: " + e.getMessage());
         }
     }
 }
