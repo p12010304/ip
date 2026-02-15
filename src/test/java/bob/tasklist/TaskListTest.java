@@ -250,4 +250,198 @@ class TaskListTest {
         List<Task> foundEnd = taskList.findTasksByDate(LocalDate.of(2024, 3, 15));
         assertEquals(1, foundEnd.size());
     }
+
+    // Additional tests for A-MoreTesting increment
+
+    @Test
+    @DisplayName("TaskList: should find tasks by keyword case-insensitive")
+    void testFindTasksByKeywordCaseInsensitive() {
+        taskList.addTask(new Todo("Buy Milk"));
+        taskList.addTask(new Todo("buy bread"));
+        taskList.addTask(new Deadline("submit assignment", "2024-03-15"));
+        
+        List<Task> found = taskList.findTasksByKeyword("BUY");
+        assertEquals(2, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: should find tasks by partial keyword")
+    void testFindTasksByPartialKeyword() {
+        taskList.addTask(new Todo("reading homework"));
+        taskList.addTask(new Todo("book report"));
+        taskList.addTask(new Deadline("read chapter 5", "2024-03-15"));
+        
+        List<Task> found = taskList.findTasksByKeyword("read");
+        assertEquals(2, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: should return empty list when no keywords match")
+    void testFindTasksByKeywordNoMatch() {
+        taskList.addTask(new Todo("buy milk"));
+        taskList.addTask(new Todo("wash car"));
+        
+        List<Task> found = taskList.findTasksByKeyword("homework");
+        assertTrue(found.isEmpty());
+    }
+
+    @Test
+    @DisplayName("TaskList: should find tasks in all task types")
+    void testFindTasksByKeywordAllTypes() {
+        taskList.addTask(new Todo("project work"));
+        taskList.addTask(new Deadline("project submission", "2024-03-15"));
+        taskList.addTask(new Event("project meeting", "2024-03-10", "2024-03-12"));
+        
+        List<Task> found = taskList.findTasksByKeyword("project");
+        assertEquals(3, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: should sort tasks alphabetically")
+    void testSortTasks() {
+        taskList.addTask(new Todo("zebra"));
+        taskList.addTask(new Todo("apple"));
+        taskList.addTask(new Todo("monkey"));
+        
+        taskList.sortTasks();
+        
+        List<Task> tasks = taskList.getAllTasks();
+        assertTrue(tasks.get(0).getDescription().equals("apple"));
+        assertTrue(tasks.get(1).getDescription().equals("monkey"));
+        assertTrue(tasks.get(2).getDescription().equals("zebra"));
+    }
+
+    @Test
+    @DisplayName("TaskList: should sort tasks case-insensitively")
+    void testSortTasksCaseInsensitive() {
+        taskList.addTask(new Todo("Zebra"));
+        taskList.addTask(new Todo("apple"));
+        taskList.addTask(new Todo("Banana"));
+        
+        taskList.sortTasks();
+        
+        List<Task> tasks = taskList.getAllTasks();
+        assertEquals("apple", tasks.get(0).getDescription());
+        assertEquals("Banana", tasks.get(1).getDescription());
+        assertEquals("Zebra", tasks.get(2).getDescription());
+    }
+
+    @Test
+    @DisplayName("TaskList: should handle sorting empty list")
+    void testSortTasksEmptyList() {
+        assertDoesNotThrow(() -> taskList.sortTasks());
+        assertTrue(taskList.isEmpty());
+    }
+
+    @Test
+    @DisplayName("TaskList: should handle sorting single task")
+    void testSortTasksSingleTask() {
+        taskList.addTask(new Todo("only task"));
+        taskList.sortTasks();
+        assertEquals(1, taskList.getSize());
+    }
+
+    @Test
+    @DisplayName("TaskList: sort should preserve task completion status")
+    void testSortPreservesCompletionStatus() throws BobException {
+        Todo task1 = new Todo("zebra");
+        task1.markAsDone();
+        taskList.addTask(task1);
+        taskList.addTask(new Todo("apple"));
+        
+        taskList.sortTasks();
+        
+        Task firstTask = taskList.getTask(0);
+        assertEquals("apple", firstTask.getDescription());
+        assertFalse(firstTask.isDone());
+        
+        Task secondTask = taskList.getTask(1);
+        assertEquals("zebra", secondTask.getDescription());
+        assertTrue(secondTask.isDone());
+    }
+
+    @Test
+    @DisplayName("TaskList: should add multiple tasks with varargs")
+    void testAddMultipleTasksVarargs() {
+        Todo task1 = new Todo("task1");
+        Todo task2 = new Todo("task2");
+        Todo task3 = new Todo("task3");
+        
+        taskList.addTask(task1, task2, task3);
+        assertEquals(3, taskList.getSize());
+    }
+
+    @Test
+    @DisplayName("TaskList: should find event not before date range")
+    void testFindTasksByDateEventNotBeforeRange() {
+        taskList.addTask(new Event("meeting", "2024-03-10", "2024-03-15"));
+        
+        List<Task> found = taskList.findTasksByDate(LocalDate.of(2024, 3, 9));
+        assertEquals(0, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: should find event not after date range")
+    void testFindTasksByDateEventNotAfterRange() {
+        taskList.addTask(new Event("meeting", "2024-03-10", "2024-03-15"));
+        
+        List<Task> found = taskList.findTasksByDate(LocalDate.of(2024, 3, 16));
+        assertEquals(0, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: constructor should create independent copy")
+    void testTaskListConstructorCreatesIndependentCopy() {
+        TaskList list1 = new TaskList();
+        list1.addTask(new Todo("task1"));
+        
+        TaskList list2 = new TaskList(list1.getAllTasks());
+        list2.addTask(new Todo("task2"));
+        
+        assertEquals(1, list1.getSize());
+        assertEquals(2, list2.getSize());
+    }
+
+    @Test
+    @DisplayName("TaskList: delete should update size correctly")
+    void testDeleteUpdatesSize() throws BobException {
+        taskList.addTask(new Todo("task1"));
+        taskList.addTask(new Todo("task2"));
+        taskList.addTask(new Todo("task3"));
+        
+        assertEquals(3, taskList.getSize());
+        taskList.deleteTask(1);
+        assertEquals(2, taskList.getSize());
+    }
+
+    @Test
+    @DisplayName("TaskList: should throw when getting from empty list")
+    void testGetTaskFromEmptyList() {
+        assertThrows(BobException.class, () -> {
+            taskList.getTask(0);
+        });
+    }
+
+    @Test
+    @DisplayName("TaskList: findByKeyword should handle empty keyword")
+    void testFindTasksByEmptyKeyword() {
+        taskList.addTask(new Todo("task"));
+        List<Task> found = taskList.findTasksByKeyword("");
+        assertEquals(1, found.size());
+    }
+
+    @Test
+    @DisplayName("TaskList: sort should handle already sorted list")
+    void testSortAlreadySortedList() {
+        taskList.addTask(new Todo("apple"));
+        taskList.addTask(new Todo("banana"));
+        taskList.addTask(new Todo("cherry"));
+        
+        taskList.sortTasks();
+        
+        List<Task> tasks = taskList.getAllTasks();
+        assertEquals("apple", tasks.get(0).getDescription());
+        assertEquals("banana", tasks.get(1).getDescription());
+        assertEquals("cherry", tasks.get(2).getDescription());
+    }
 }

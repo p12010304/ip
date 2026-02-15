@@ -219,4 +219,115 @@ class ParserTest {
         LocalDate date = Parser.parseDate("  2024-03-15  ");
         assertEquals(LocalDate.of(2024, 3, 15), date);
     }
+
+    // Additional tests for A-MoreTesting increment
+
+    @Test
+    @DisplayName("parseTaskIndex: should reject zero as task number")
+    void testParseTaskIndexZero() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseTaskIndex("mark 0");
+        });
+    }
+
+    @Test
+    @DisplayName("parseTaskIndex: should reject negative task numbers")
+    void testParseTaskIndexNegative() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseTaskIndex("delete -5");
+        });
+    }
+
+    @Test
+    @DisplayName("parseAddTodo: should handle whitespace-only after command")
+    void testParseAddTodoWhitespaceOnly() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseAddTodo("todo     ");
+        });
+    }
+
+    @Test
+    @DisplayName("parseAddDeadline: should throw when date is empty")
+    void testParseAddDeadlineEmptyDate() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseAddDeadline("deadline submit /by ");
+        });
+    }
+
+    @Test
+    @DisplayName("parseAddEvent: should throw when description is empty")
+    void testParseAddEventEmptyDescription() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseAddEvent("event /from 2024-03-10 /to 2024-03-12");
+        });
+    }
+
+    @Test
+    @DisplayName("parseAddEvent: should throw when from date is empty")
+    void testParseAddEventEmptyFromDate() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseAddEvent("event meeting /from  /to 2024-03-12");
+        });
+    }
+
+    @Test
+    @DisplayName("parseAddEvent: should throw when to date is empty")
+    void testParseAddEventEmptyToDate() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseAddEvent("event meeting /from 2024-03-10 /to ");
+        });
+    }
+
+    @Test
+    @DisplayName("parseCommand: should handle whitespace in command")
+    void testParseCommandWithWhitespace() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseCommand("   ");
+        });
+    }
+
+    @Test
+    @DisplayName("parseTaskIndex: should correctly convert 1-based to 0-based")
+    void testParseTaskIndexConversion() throws BobException {
+        assertEquals(0, Parser.parseTaskIndex("mark 1"));
+        assertEquals(9, Parser.parseTaskIndex("mark 10"));
+        assertEquals(99, Parser.parseTaskIndex("mark 100"));
+    }
+
+    @Test
+    @DisplayName("parseAddTodo: should preserve multiple spaces in description")
+    void testParseAddTodoMultipleSpaces() throws BobException {
+        Task todo = Parser.parseAddTodo("todo buy  milk  and  bread");
+        assertTrue(todo.getDescription().contains("buy"));
+        assertTrue(todo.getDescription().contains("milk"));
+    }
+
+    @Test
+    @DisplayName("parseAddDeadline: should handle dates with extra whitespace")
+    void testParseAddDeadlineWhitespaceAroundDate() throws BobException {
+        Task deadline = Parser.parseAddDeadline("deadline task /by   2024-03-15   ");
+        assertInstanceOf(Deadline.class, deadline);
+    }
+
+    @Test
+    @DisplayName("parseDate: should throw on empty string")
+    void testParseDateEmptyString() {
+        assertThrows(BobException.class, () -> {
+            Parser.parseDate("");
+        });
+    }
+
+    @Test
+    @DisplayName("parseCommand: should handle sort command")
+    void testParseCommandSort() throws BobException {
+        BaseCommand cmd = Parser.parseCommand("sort");
+        assertInstanceOf(SortCommand.class, cmd);
+    }
+
+    @Test
+    @DisplayName("parseTaskIndex: should handle large task numbers")
+    void testParseTaskIndexLargeNumber() throws BobException {
+        int index = Parser.parseTaskIndex("mark 9999");
+        assertEquals(9998, index);
+    }
 }
