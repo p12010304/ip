@@ -38,7 +38,7 @@ public class Parser {
      */
     public static BaseCommand parseCommand(String input) throws BobException {
         if (input.trim().isEmpty()) {
-            throw new BobException("Oops! You didn't type anything. Please enter a command!");
+            throw new BobException("Please enter a command!");
         }
 
         String firstWord = input.split(" ")[0].toUpperCase();
@@ -85,11 +85,11 @@ public class Parser {
      */
     public static Task parseAddTodo(String input) throws BobException {
         if (input.trim().length() <= 4) {
-            throw new BobException("Oops! The description of a todo cannot be empty. What needs to be done?");
+            throw new BobException("The description of a todo cannot be empty. What needs to be done?");
         }
         String description = input.substring(5).trim();
         if (description.isEmpty()) {
-            throw new BobException("Oops! The description of a todo cannot be empty. What needs to be done?");
+            throw new BobException("The description of a todo cannot be empty. What needs to be done?");
         }
         return new Todo(description);
     }

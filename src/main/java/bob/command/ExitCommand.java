@@ -17,7 +17,7 @@ public class ExitCommand extends BaseCommand {
 
     @Override
     public String executeForGui(TaskList tasks, Storage storage) throws BobException {
-        return "Aww, leaving already? 😢\nKeep crushing those tasks! See you soon! 🚀✨";
+        return "Goodbye! Thanks for using Bob.";
     }
 
     @Override

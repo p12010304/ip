@@ -20,7 +20,7 @@ public class SortCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your sorted tasks: " + e.getMessage());
+            throw new BobException("Could not save your sorted tasks: " + e.getMessage());
         }
     }
 
@@ -30,16 +30,15 @@ public class SortCommand extends BaseCommand {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your sorted tasks: " + e.getMessage());
+            throw new BobException("Could not save your sorted tasks: " + e.getMessage());
         }
         if (tasks.getSize() == 0) {
-            return "🤷 You have no tasks to sort yet!\nAdd some first? 😊";
+            return "You have no tasks to sort yet!";
         }
-        StringBuilder sb = new StringBuilder("🎯 Done! Your tasks are now sorted:\n");
+        StringBuilder sb = new StringBuilder("Done! Tasks sorted alphabetically:\n");
         for (int i = 0; i < tasks.getSize(); i++) {
             sb.append((i + 1)).append(".").append(tasks.getTask(i).toString()).append("\n");
         }
-        sb.append("\nMuch more organized now! 📚✨");
         return sb.toString().trim();
     }
 }

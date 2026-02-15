@@ -36,23 +36,37 @@ public class MarkCommand extends BaseCommand {
         int idx = Parser.parseTaskIndex(userInput);
         tasks.markTask(idx);
         saveTasksQuiet(storage, tasks);
-        return "🎉 Awesome job! One down! Marked as complete:\n  " + tasks.getTask(idx).toString()
-                + "\nKeep up the great work! ⭐";
+        return "Nice! Marked this task as done:\n  " + tasks.getTask(idx).toString();
     }
 
+    /**
+     * Saves the task list to storage and displays an error message if the save fails.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @param ui the user interface for displaying error messages
+     */
     private void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showError("Oops! Couldn't save your task: " + e.getMessage());
+            ui.showError("Could not save your task: " + e.getMessage());
         }
     }
 
+    /**
+     * Saves the task list to storage and throws an exception if the save fails.
+     * Used by GUI mode to propagate errors.
+     *
+     * @param storage the storage manager to save tasks to
+     * @param tasks the task list to save
+     * @throws BobException if an I/O error occurs during save
+     */
     private void saveTasksQuiet(Storage storage, TaskList tasks) throws BobException {
         try {
             storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            throw new BobException("Oops! Couldn't save your task: " + e.getMessage());
+            throw new BobException("Could not save your task: " + e.getMessage());
         }
     }
 }

@@ -84,7 +84,6 @@ public class Storage {
         Path path = Paths.get(filePath);
         File f = path.toFile();
 
-        // If file doesn't exist, return empty list
         if (!f.exists()) {
             return loadedTasks;
         }
@@ -92,76 +91,9 @@ public class Storage {
         try {
             List<String> lines = Files.readAllLines(path);
             for (String line : lines) {
-                try {
-                    // Skip empty lines
-                    if (line.trim().isEmpty()) {
-                        continue;
-                    }
-
-                    String[] p = line.split(" \\| ");
-
-                    // Validate minimum fields
-                    if (p.length < 3) {
-                        System.out.println("Warning: Skipping corrupted line (insufficient fields): " + line);
-                        continue;
-                    }
-
-                    Task t;
-                    try {
-                        switch (p[0].trim()) {
-                        case "T":
-                            t = new bob.task.Todo(p[2]);
-                            break;
-                        case "D":
-                            if (p.length < 4) {
-                                System.out.println("Warning: Skipping corrupted deadline (missing deadline): "
-                                        + line);
-                                continue;
-                            }
-                            try {
-                                LocalDate deadlineDate = LocalDate.parse(p[3].trim(), DATE_FORMAT);
-                                t = new bob.task.Deadline(p[2], deadlineDate);
-                            } catch (DateTimeParseException e) {
-                                System.out.println("Warning: Skipping deadline with invalid date format: " + line);
-                                continue;
-                            }
-                            break;
-                        case "E":
-                            if (p.length < 5) {
-                                System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
-                                continue;
-                            }
-                            try {
-                                LocalDate eventFrom = LocalDate.parse(p[3].trim(), DATE_FORMAT);
-                                LocalDate eventTo = LocalDate.parse(p[4].trim(), DATE_FORMAT);
-                                t = new bob.task.Event(p[2], eventFrom, eventTo);
-                            } catch (DateTimeParseException e) {
-                                System.out.println("Warning: Skipping event with invalid date format: " + line);
-                                continue;
-                            }
-                            break;
-                        default:
-                            System.out.println("Warning: Skipping line with unknown task type: " + line);
-                            continue;
-                        }
-
-                        // Mark as done if status is 1
-                        try {
-                            if (p[1].trim().equals("1")) {
-                                t.markAsDone();
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Warning: Invalid status field, treating as not done: " + line);
-                        }
-
-                        loadedTasks.add(t);
-                    } catch (Exception e) {
-                        System.out.println("Warning: Error parsing task, skipping line: " + line);
-                        continue;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Warning: Error processing line: " + line);
-                    continue;
+                Task task = parseTaskFromLine(line);
+                if (task != null) {
+                    loadedTasks.add(task);
                 }
             }
         } catch (IOException e) {
@@ -169,13 +101,137 @@ public class Storage {
             return loadedTasks;
         }
 
-        // Assert that the loaded tasks list is not null and contains only valid tasks
+        validateLoadedTasks(loadedTasks);
+        return loadedTasks;
+    }
+
+    /**
+     * Parses a single line from the storage file and creates a Task.
+     * Returns null if the line is invalid or cannot be parsed.
+     *
+     * @param line the line to parse
+     * @return the parsed Task, or null if parsing fails
+     */
+    private Task parseTaskFromLine(String line) {
+        if (line.trim().isEmpty()) {
+            return null;
+        }
+
+        String[] parts = line.split(" \\| ");
+        if (parts.length < 3) {
+            System.out.println("Warning: Skipping corrupted line (insufficient fields): " + line);
+            return null;
+        }
+
+        Task task = createTaskByType(parts, line);
+        if (task != null) {
+            applyCompletionStatus(task, parts, line);
+        }
+        return task;
+    }
+
+    /**
+     * Creates a task based on the task type indicator.
+     *
+     * @param parts the split components of the storage line
+     * @param line the original line for error reporting
+     * @return the created Task, or null if creation fails
+     */
+    private Task createTaskByType(String[] parts, String line) {
+        String taskType = parts[0].trim();
+        switch (taskType) {
+        case "T":
+            return createTodoTask(parts);
+        case "D":
+            return createDeadlineTask(parts, line);
+        case "E":
+            return createEventTask(parts, line);
+        default:
+            System.out.println("Warning: Skipping line with unknown task type: " + line);
+            return null;
+        }
+    }
+
+    /**
+     * Creates a Todo task from the parsed components.
+     *
+     * @param parts the split components of the storage line
+     * @return the created Todo task
+     */
+    private Task createTodoTask(String[] parts) {
+        return new bob.task.Todo(parts[2]);
+    }
+
+    /**
+     * Creates a Deadline task from the parsed components.
+     *
+     * @param parts the split components of the storage line
+     * @param line the original line for error reporting
+     * @return the created Deadline task, or null if creation fails
+     */
+    private Task createDeadlineTask(String[] parts, String line) {
+        if (parts.length < 4) {
+            System.out.println("Warning: Skipping corrupted deadline (missing deadline): " + line);
+            return null;
+        }
+        try {
+            LocalDate deadlineDate = LocalDate.parse(parts[3].trim(), DATE_FORMAT);
+            return new bob.task.Deadline(parts[2], deadlineDate);
+        } catch (DateTimeParseException e) {
+            System.out.println("Warning: Skipping deadline with invalid date format: " + line);
+            return null;
+        }
+    }
+
+    /**
+     * Creates an Event task from the parsed components.
+     *
+     * @param parts the split components of the storage line
+     * @param line the original line for error reporting
+     * @return the created Event task, or null if creation fails
+     */
+    private Task createEventTask(String[] parts, String line) {
+        if (parts.length < 5) {
+            System.out.println("Warning: Skipping corrupted event (missing from/to): " + line);
+            return null;
+        }
+        try {
+            LocalDate eventFrom = LocalDate.parse(parts[3].trim(), DATE_FORMAT);
+            LocalDate eventTo = LocalDate.parse(parts[4].trim(), DATE_FORMAT);
+            return new bob.task.Event(parts[2], eventFrom, eventTo);
+        } catch (DateTimeParseException e) {
+            System.out.println("Warning: Skipping event with invalid date format: " + line);
+            return null;
+        }
+    }
+
+    /**
+     * Applies the completion status to a task based on the storage data.
+     *
+     * @param task the task to update
+     * @param parts the split components of the storage line
+     * @param line the original line for error reporting
+     */
+    private void applyCompletionStatus(Task task, String[] parts, String line) {
+        try {
+            if (parts[1].trim().equals("1")) {
+                task.markAsDone();
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Invalid status field, treating as not done: " + line);
+        }
+    }
+
+    /**
+     * Validates that all loaded tasks are non-null.
+     *
+     * @param loadedTasks the list of tasks to validate
+     */
+    private void validateLoadedTasks(List<Task> loadedTasks) {
         assert loadedTasks != null : "Loaded tasks list should not be null";
         for (Task task : loadedTasks) {
             assert task != null : "All tasks in loaded list should be non-null";
         }
-
-        return loadedTasks;
     }
 }
 
