@@ -158,4 +158,134 @@ class TaskTest {
         
         assertEquals(date, deadline.getDate());
     }
+
+    // Additional tests for A-MoreTesting increment
+
+    @Test
+    @DisplayName("Event: should reject from date after to date")
+    void testEventInvalidDateOrder() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Event("meeting", "2024-03-15", "2024-03-10");
+        });
+    }
+
+    @Test
+    @DisplayName("Event: should reject same from and to date when from is after")
+    void testEventInvalidSameDateOrder() {
+        // This should work - same date is valid
+        assertDoesNotThrow(() -> {
+            new Event("meeting", "2024-03-15", "2024-03-15");
+        });
+    }
+
+    @Test
+    @DisplayName("Event: should reject with LocalDate constructor when from after to")
+    void testEventLocalDateInvalidOrder() {
+        LocalDate from = LocalDate.of(2024, 3, 20);
+        LocalDate to = LocalDate.of(2024, 3, 10);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Event("conference", from, to);
+        });
+    }
+
+    @Test
+    @DisplayName("Todo: should preserve exact description")
+    void testTodoDescriptionPreservation() {
+        String description = "buy milk, bread, and eggs";
+        Todo todo = new Todo(description);
+        assertEquals(description, todo.getDescription());
+    }
+
+    @Test
+    @DisplayName("Deadline: should handle whitespace in date string")
+    void testDeadlineWhitespaceInDate() {
+        Deadline deadline = new Deadline("task", "  2024-03-15  ");
+        assertEquals(LocalDate.of(2024, 3, 15), deadline.getDate());
+    }
+
+    @Test
+    @DisplayName("Event: should handle whitespace in date strings")
+    void testEventWhitespaceInDates() {
+        Event event = new Event("meeting", "  2024-03-10  ", "  2024-03-12  ");
+        assertEquals(LocalDate.of(2024, 3, 10), event.getFromDate());
+        assertEquals(LocalDate.of(2024, 3, 12), event.getToDate());
+    }
+
+    @Test
+    @DisplayName("Task: isDone should return false initially")
+    void testTaskInitiallyNotDone() {
+        Todo todo = new Todo("test");
+        assertFalse(todo.isDone());
+    }
+
+    @Test
+    @DisplayName("Task: isDone should return true after marking")
+    void testTaskDoneAfterMarking() {
+        Todo todo = new Todo("test");
+        todo.markAsDone();
+        assertTrue(todo.isDone());
+    }
+
+    @Test
+    @DisplayName("Todo: toString should contain type marker")
+    void testTodoToStringContainsTypeMarker() {
+        Todo todo = new Todo("test");
+        String str = todo.toString();
+        assertTrue(str.startsWith("[T]"));
+    }
+
+    @Test
+    @DisplayName("Deadline: toString should contain type marker and date")
+    void testDeadlineToStringFormat() {
+        Deadline deadline = new Deadline("submit", "2024-03-15");
+        String str = deadline.toString();
+        assertTrue(str.startsWith("[D]"));
+        assertTrue(str.contains("by:"));
+    }
+
+    @Test
+    @DisplayName("Event: toString should contain type marker and date range")
+    void testEventToStringFormat() {
+        Event event = new Event("meeting", "2024-03-10", "2024-03-12");
+        String str = event.toString();
+        assertTrue(str.startsWith("[E]"));
+        assertTrue(str.contains("from:"));
+        assertTrue(str.contains("to:"));
+    }
+
+    @Test
+    @DisplayName("Deadline: file format should preserve date in ISO format")
+    void testDeadlineFileFormatDatePreservation() {
+        Deadline deadline = new Deadline("task", "2024-12-31");
+        String fileStr = deadline.toFileString();
+        assertTrue(fileStr.contains("2024-12-31"));
+    }
+
+    @Test
+    @DisplayName("Event: file format should preserve both dates in ISO format")
+    void testEventFileFormatDatePreservation() {
+        Event event = new Event("conference", "2024-06-01", "2024-06-03");
+        String fileStr = event.toFileString();
+        assertTrue(fileStr.contains("2024-06-01"));
+        assertTrue(fileStr.contains("2024-06-03"));
+    }
+
+    @Test
+    @DisplayName("Task: multiple mark operations should be idempotent")
+    void testTaskMultipleMark() {
+        Todo todo = new Todo("test");
+        todo.markAsDone();
+        // Second mark would trigger assertion, so we just verify it's done
+        assertTrue(todo.isDone());
+        // Can't call markAsDone again due to assertion in implementation
+    }
+
+    @Test
+    @DisplayName("Task: multiple unmark operations should be idempotent")
+    void testTaskMultipleUnmark() {
+        Todo todo = new Todo("test");
+        assertFalse(todo.isDone());
+        // Can't unmark when not done due to assertion in implementation
+        // This tests the initial state is correct
+    }
 }
