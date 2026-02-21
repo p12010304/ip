@@ -51,6 +51,9 @@ public class Bob {
      * @return Bob's response
      */
     public String getResponse(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return "Please enter a command!";
+        }
         try {
             BaseCommand command = Parser.parseCommand(input);
             return command.executeForGui(tasks, storage);

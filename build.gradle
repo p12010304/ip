@@ -23,8 +23,16 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: '17.0.6'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: '17.0.6'
+    String javaFxVersion = '17.0.6'
+    String[] platforms = ['win', 'linux', 'mac', 'mac-aarch64']
+
+    for (platform in platforms) {
+        implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: platform
+        implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: platform
+        implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: platform
+        implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: platform
+    }
+
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 }

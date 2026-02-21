@@ -1,8 +1,11 @@
 package bob.storage;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,20 +56,11 @@ public class Storage {
             f.getParentFile().mkdirs();
         }
 
-        // Write tasks to file
-        FileWriter fw = new FileWriter(f);
-        try {
-            tasks.stream()
-                    .map(t -> t.toFileString() + System.lineSeparator())
-                    .forEach(line -> {
-                        try {
-                            fw.write(line);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-        } finally {
-            fw.close();
+        // Write tasks to file using UTF-8 encoding for cross-platform compatibility
+        try (Writer fw = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)) {
+            for (Task task : tasks) {
+                fw.write(task.toFileString() + "\n");
+            }
         }
     }
 
@@ -89,7 +83,7 @@ public class Storage {
         }
 
         try {
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
             for (String line : lines) {
                 Task task = parseTaskFromLine(line);
                 if (task != null) {
@@ -159,7 +153,7 @@ public class Storage {
      * @return the created Todo task
      */
     private Task createTodoTask(String[] parts) {
-        return new bob.task.Todo(parts[2]);
+        return new bob.task.Todo(parts[2].trim());
     }
 
     /**

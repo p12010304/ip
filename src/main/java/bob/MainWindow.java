@@ -23,8 +23,23 @@ public class MainWindow extends AnchorPane {
 
     private Bob bob;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image bobImage = new Image(this.getClass().getResourceAsStream("/images/DaBob.png"));
+    private Image userImage = loadImage("/images/DaUser.png");
+    private Image bobImage = loadImage("/images/DaBob.png");
+
+    /**
+     * Loads an image resource safely, returning a default image if the resource is not found.
+     *
+     * @param resourcePath the path to the image resource
+     * @return the loaded Image
+     */
+    private static Image loadImage(String resourcePath) {
+        java.io.InputStream stream = MainWindow.class.getResourceAsStream(resourcePath);
+        if (stream == null) {
+            System.out.println("Warning: Image not found: " + resourcePath);
+            return new Image("https://via.placeholder.com/100");
+        }
+        return new Image(stream);
+    }
 
     /**
      * Initializes the MainWindow by binding the scroll pane and displaying the welcome message.
@@ -55,6 +70,10 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        if (input == null || input.trim().isEmpty()) {
+            userInput.clear();
+            return;
+        }
         String response = bob.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
