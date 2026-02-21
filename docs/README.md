@@ -2,184 +2,286 @@
 
 ![Ui](Ui.png)
 
-Bob is a **friendly task management application** that helps you keep track of your todos, deadlines, and events through a clean graphical interface. Bob is designed to be simple, intuitive, and efficient for managing your daily tasks.
+## Introduction
+
+**Bob** is a desktop task management chatbot with a graphical user interface (GUI).  
+It helps you stay on top of your todos, deadlines, and events using simple text commands.
+
+Bob supports:
+- Adding tasks (Todo, Deadline, Event)
+- Marking tasks as done or not done
+- Searching, sorting, and deleting tasks
+- Automatic saving and loading of your task list
+
+---
 
 ## Quick Start
 
-1. Ensure you have Java 17 or above installed.
-2. Download the latest `ip.jar` from the releases page.
-3. Double-click the jar file to start the application.
-4. Type commands in the text box and press Enter to execute them.
-5. Refer to the Features below for details of each command.
+1. Ensure you have **Java 17 or above** installed.
+2. Download the latest `bob.jar` from the [releases page](https://github.com/p12010304/ip/releases).
+3. Open a terminal and run:
+   ```
+   java -jar bob.jar
+   ```
+4. Type commands into the input box and press **Enter** or click **Send**.
+5. Refer to the Features section below for all available commands.
+
+---
 
 ## Features
 
-### Adding a Todo: `todo`
+### Adding a todo task: `todo`
 
-Adds a simple task without any date.
+Adds a task without any date.
 
-Format: `todo DESCRIPTION`
+**Format:**
+```
+todo DESCRIPTION
+```
 
-Example:
-- `todo Buy groceries`
-- `todo Read book`
+**Example:**
+```
+todo Read CS2103 textbook
+```
 
-Expected output:
+**Expected output:**
 ```
 Got it. I've added this task:
-  [T][ ] Buy groceries
+  [T][ ] Read CS2103 textbook
 Now you have 1 task(s) in the list.
 ```
 
-### Adding a Deadline: `deadline`
+---
+
+### Adding a deadline: `deadline`
 
 Adds a task with a specific due date.
 
-Format: `deadline DESCRIPTION /by YYYY-MM-DD`
+**Format:**
+```
+deadline DESCRIPTION /by YYYY-MM-DD
+```
 
-Example:
-- `deadline Submit assignment /by 2026-03-01`
-- `deadline Pay bills /by 2026-02-28`
+**Example:**
+```
+deadline Submit assignment /by 2026-03-01
+```
 
-Expected output:
+**Expected output:**
 ```
 Got it. I've added this task:
   [D][ ] Submit assignment (by: Mar 1 2026)
 Now you have 2 task(s) in the list.
 ```
 
-### Adding an Event: `event`
+---
 
-Adds an event with a start and end date.
+### Adding an event: `event`
 
-Format: `event DESCRIPTION /from YYYY-MM-DD /to YYYY-MM-DD`
+Adds a task with a start date and an end date.
 
-Example:
-- `event Conference /from 2026-03-10 /to 2026-03-12`
-- `event Team meeting /from 2026-02-20 /to 2026-02-20`
+**Format:**
+```
+event DESCRIPTION /from YYYY-MM-DD /to YYYY-MM-DD
+```
 
-Expected output:
+**Example:**
+```
+event Project meeting /from 2026-03-10 /to 2026-03-12
+```
+
+**Expected output:**
 ```
 Got it. I've added this task:
-  [E][ ] Conference (from: Mar 10 2026 to: Mar 12 2026)
+  [E][ ] Project meeting (from: Mar 10 2026 to: Mar 12 2026)
 Now you have 3 task(s) in the list.
 ```
 
-### Listing All Tasks: `list`
+---
 
-Shows all tasks in your task list.
+### Listing all tasks: `list`
 
-Format: `list`
+Displays all tasks currently in your list.
 
-Expected output:
+**Format:**
+```
+list
+```
+
+**Expected output:**
 ```
 Here are the tasks in your list:
-1. [T][ ] Buy groceries
+1. [T][ ] Read CS2103 textbook
 2. [D][ ] Submit assignment (by: Mar 1 2026)
-3. [E][ ] Conference (from: Mar 10 2026 to: Mar 12 2026)
+3. [E][ ] Project meeting (from: Mar 10 2026 to: Mar 12 2026)
 ```
 
-### Marking a Task as Done: `mark`
+---
 
-Marks a task as completed.
+### Marking a task as done: `mark`
 
-Format: `mark INDEX`
+Marks the specified task as completed.
 
-Example:
-- `mark 1`
+**Format:**
+```
+mark INDEX
+```
 
-Expected output:
+**Example:**
+```
+mark 1
+```
+
+**Expected output:**
 ```
 Nice! I've marked this task as done:
-  [T][X] Buy groceries
+  [T][X] Read CS2103 textbook
 ```
 
-### Unmarking a Task: `unmark`
+---
+
+### Unmarking a task: `unmark`
 
 Marks a completed task as not done.
 
-Format: `unmark INDEX`
+**Format:**
+```
+unmark INDEX
+```
 
-Example:
-- `unmark 1`
+**Example:**
+```
+unmark 1
+```
 
-Expected output:
+**Expected output:**
 ```
 OK, I've marked this task as not done yet:
-  [T][ ] Buy groceries
+  [T][ ] Read CS2103 textbook
 ```
 
-### Deleting a Task: `delete`
+---
+
+### Deleting a task: `delete`
 
 Removes a task from your list.
 
-Format: `delete INDEX`
+**Format:**
+```
+delete INDEX
+```
 
-Example:
-- `delete 2`
+**Example:**
+```
+delete 2
+```
 
-Expected output:
+**Expected output:**
 ```
 Noted. I've removed this task:
   [D][ ] Submit assignment (by: Mar 1 2026)
 Now you have 2 task(s) in the list.
 ```
 
-### Finding Tasks: `find`
+---
 
-Searches for tasks containing a specific keyword.
+### Finding tasks: `find`
 
-Format: `find KEYWORD`
+Searches for tasks whose description contains the given keyword.
 
-Example:
-- `find book`
-- `find meeting`
+**Format:**
+```
+find KEYWORD
+```
 
-Expected output:
+**Example:**
+```
+find meeting
+```
+
+**Expected output:**
 ```
 Here are the matching tasks in your list:
-1. [T][ ] Read book
+1. [E][ ] Project meeting (from: Mar 10 2026 to: Mar 12 2026)
 ```
 
-### Sorting Tasks: `sort`
+---
+
+### Sorting tasks: `sort`
 
 Sorts all tasks alphabetically by description.
 
-Format: `sort`
+**Format:**
+```
+sort
+```
 
-Expected output:
+**Expected output:**
 ```
 Done! Your tasks are now sorted alphabetically.
 ```
 
-### Exiting the Program: `bye`
+---
+
+### Exiting the application: `bye`
 
 Closes the application.
 
-Format: `bye`
+**Format:**
+```
+bye
+```
 
-Expected output:
+**Expected output:**
 ```
 Goodbye! Hope to see you again soon!
 ```
 
+---
+
+## Error Handling
+
+If an invalid command is entered, Bob will display an error message:
+```
+I'm sorry, I don't understand that command. Try: todo, deadline, event, list, mark, unmark, delete, find, sort, or bye.
+```
+
+If required input is missing:
+```
+The description of a todo cannot be empty. What needs to be done?
+```
+
+If a deadline is missing the `/by` part:
+```
+A deadline must have a /by part! Try: deadline <description> /by <yyyy-MM-dd>
+```
+
+If an event is missing `/from` or `/to`:
+```
+An event must have both /from and /to parts! Try: event <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>
+```
+
+---
+
 ## Command Summary
 
-| Command | Format | Example |
-|---------|--------|---------|
-| Todo | `todo DESCRIPTION` | `todo Buy milk` |
-| Deadline | `deadline DESCRIPTION /by YYYY-MM-DD` | `deadline Submit report /by 2026-03-01` |
-| Event | `event DESCRIPTION /from YYYY-MM-DD /to YYYY-MM-DD` | `event Conference /from 2026-03-10 /to 2026-03-12` |
-| List | `list` | `list` |
-| Mark | `mark INDEX` | `mark 1` |
-| Unmark | `unmark INDEX` | `unmark 1` |
-| Delete | `delete INDEX` | `delete 2` |
-| Find | `find KEYWORD` | `find book` |
-| Sort | `sort` | `sort` |
-| Exit | `bye` | `bye` |
+| Command    | Format                                              | Example                                            |
+|------------|-----------------------------------------------------|----------------------------------------------------|
+| `todo`     | `todo DESCRIPTION`                                  | `todo Buy milk`                                    |
+| `deadline` | `deadline DESCRIPTION /by YYYY-MM-DD`               | `deadline Submit report /by 2026-03-01`            |
+| `event`    | `event DESCRIPTION /from YYYY-MM-DD /to YYYY-MM-DD` | `event Conference /from 2026-03-10 /to 2026-03-12` |
+| `list`     | `list`                                              | `list`                                             |
+| `mark`     | `mark INDEX`                                        | `mark 1`                                           |
+| `unmark`   | `unmark INDEX`                                      | `unmark 1`                                         |
+| `delete`   | `delete INDEX`                                      | `delete 2`                                         |
+| `find`     | `find KEYWORD`                                      | `find meeting`                                     |
+| `sort`     | `sort`                                              | `sort`                                             |
+| `bye`      | `bye`                                               | `bye`                                              |
+
+---
 
 ## Notes
 
-- All dates must be in `YYYY-MM-DD` format (e.g., 2026-02-15)
-- Task indices are 1-based (first task is 1, not 0)
-- Your tasks are automatically saved and will be loaded when you restart Bob
+- All dates must be in `YYYY-MM-DD` format (e.g., `2026-03-01`)
+- `INDEX` refers to the task number shown in the `list` output (starts from 1)
+- Your tasks are automatically saved after every change and restored when you reopen Bob
