@@ -36,7 +36,8 @@ public class MainWindow extends AnchorPane {
         java.io.InputStream stream = MainWindow.class.getResourceAsStream(resourcePath);
         if (stream == null) {
             System.out.println("Warning: Image not found: " + resourcePath);
-            return new Image("https://via.placeholder.com/100");
+            // Return a small blank image as fallback
+            return new javafx.scene.image.WritableImage(60, 60);
         }
         return new Image(stream);
     }
